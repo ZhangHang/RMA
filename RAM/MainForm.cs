@@ -29,7 +29,24 @@ namespace RAM
         private void Setup_CarrierList()
         {
             carrierListView.DoubleClick += CarrierListView_DoubleClick;
+
+            ContextMenu menu = new ContextMenu();
+            MenuItem createNewItem = new MenuItem("Create Carrier", createNewCarrier);
+            carrierListView.ContextMenu = new ContextMenu();
+            carrierListView.ContextMenu.MenuItems.Add(createNewItem);
             Load_Demo_Data();
+        }
+
+        private void createNewCarrier(object sender, EventArgs e)
+        {
+            CreateCarrierForm createForm = new CreateCarrierForm(CarrierStore);
+            createForm.FormClosed += CreateForm_FormClosed;
+            createForm.ShowDialog();
+        }
+
+        private void CreateForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Reload_Carrier_Data();
         }
 
         private void CarrierListView_DoubleClick(object sender, EventArgs e)
