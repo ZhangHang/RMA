@@ -20,24 +20,24 @@ namespace RAM
          */
 
         public string SCAC; //  four characters, Primary ID
-        public string name; //  four characters
-        private List<Rate> rates = new List<Rate>();
+        public string Name; //  four characters
+        private List<Rate> Rates = new List<Rate>();
 
         #region
         public bool AddRate(Rate newRate)
         {
-            if (rates.Contains(newRate))
+            if (Rates.Contains(newRate))
             {
                 return false;
             }
-            rates.Add(newRate);
+            Rates.Add(newRate);
             return true;
         }
         public bool RemoveRate(Rate oldRate)
         {
-            if (rates.Contains(oldRate))
+            if (Rates.Contains(oldRate))
             {
-                rates.Remove(oldRate);
+                Rates.Remove(oldRate);
                 return true;
             }
             return false;
@@ -68,17 +68,17 @@ namespace RAM
          * efine the region, but they must have a short region name and a description. RMA must let users vie-
          * w all regions and add new regions.
          */
-        public string shortName;
-        public string description;
+        public string ShortName;
+        public string Description;
 
-        public double xAxis;
-        public double yAxis;
+        public double XAxis;
+        public double YAxis;
 
         public double DistanceBetween(Region anotherRegion)
         {
             return Math.Sqrt(
-                Math.Pow(anotherRegion.xAxis - xAxis, 2) +
-                Math.Pow(anotherRegion.yAxis - yAxis, 2)
+                Math.Pow(anotherRegion.XAxis - XAxis, 2) +
+                Math.Pow(anotherRegion.YAxis - YAxis, 2)
                 );
         }
 
@@ -88,8 +88,8 @@ namespace RAM
             if (obj is Carrier)
             {
                 Region objToCompare = obj as Region;
-                return objToCompare.xAxis == xAxis
-                    && objToCompare.yAxis == yAxis;
+                return objToCompare.XAxis == XAxis
+                    && objToCompare.YAxis == YAxis;
             }
             return base.Equals(obj);
         }
@@ -112,45 +112,37 @@ namespace RAM
          * s, and delete existing rates.
          */
 
-        public Region originRegion;
-        public Region destinationRegion;
-        abstract public double cost { get; }
+        public Region OriginRegion;
+        public Region DestinationRegion;
+        abstract public double Cost { get; }
 
-        internal double distance()
+        public Rate(Region origin, Region destination)
         {
-            return originRegion.DistanceBetween(destinationRegion);
+            OriginRegion = origin;
+            DestinationRegion = destination;
         }
-
-        #region
-        public override bool Equals(object obj)
+        
+        internal double Distance()
         {
-            if (obj is Carrier)
-            {
-                Rate objToCompare = obj as Rate;
-                return objToCompare.destinationRegion == destinationRegion
-                    && objToCompare.originRegion == originRegion;
-            }
-            return base.Equals(obj);
+            return OriginRegion.DistanceBetween(DestinationRegion);
         }
-        #endregion
-
     }
 
     [Serializable]
     public sealed class FlatRate : Rate
     {
-        private double totalCost;
+        private double Totalcost;
 
-        public FlatRate(double cost)
+        public FlatRate(Region origin, Region destination, double totalcost) : base(origin, destination)
         {
-            totalCost = cost;
+            Totalcost = totalcost;
         }
 
-        public override double cost
+        public override double Cost
         {
             get
             {
-                return totalCost;
+                return Totalcost;
             }
         }
     }
@@ -158,18 +150,18 @@ namespace RAM
     [Serializable]
     public sealed class UnflatRate : Rate
     {
-        private double costPerMile;
+        private double CostPerMile;
 
-        public UnflatRate(double cost)
+        public UnflatRate(Region origin, Region destination, double costPerMile) : base(origin, destination)
         {
-            costPerMile = cost;
+            CostPerMile = costPerMile;
         }
 
-        public override double cost
+        public override double Cost
         {
             get
             {
-                return costPerMile * distance();
+                return CostPerMile * Distance();
             }
         }
     }

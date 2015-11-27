@@ -8,31 +8,38 @@ using System.Threading.Tasks;
 
 namespace RAM
 {
-    class Store
+    public class Store<T>
     {
-        private string databaseName;
-        private List<Carrier> carriers;
+        private string DatabaseName;
+        public List<T> Collection = new List<T>();
 
         public Store(string storeName)
         {
-            databaseName = storeName;
+            DatabaseName = storeName;
+            readFromDisk();
         }
 
-        public void saveToDisk()
+        public void SaveToDisk()
         {
-            using (FileStream fs = new FileStream(databaseName, FileMode.Create))
+            using (FileStream fs = new FileStream(DatabaseName, FileMode.Create))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fs, carriers);
+                bf.Serialize(fs, Collection);
             }
         }
-
+        
         public void readFromDisk()
         {
-            using (FileStream fs = new FileStream(databaseName, FileMode.OpenOrCreate))
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                carriers = bf.Deserialize(fs) as List<Carrier>;
+            try {
+                using (FileStream fs = new FileStream(DatabaseName, FileMode.OpenOrCreate))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    Collection = bf.Deserialize(fs) as List<T>;
+                }
+            }
+            catch (Exception e)
+            { 
+              
             }
         }
     }
