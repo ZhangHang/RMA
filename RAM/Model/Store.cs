@@ -10,27 +10,27 @@ namespace RAM
 {
     public class Store<T>
     {
-        private string _databaseName;
+        private string _storeName;
         public List<T> Items = new List<T>();
 
         public Store(string storeName)
         {
-            _databaseName = storeName;
+            _storeName = storeName;
             ReadFromDisk();
         }
 
         public void Erase()
         {
             Items.Clear();
-            if (File.Exists(_databaseName))
+            if (File.Exists(_storeName))
             {
-                File.Delete(_databaseName);
+                File.Delete(_storeName);
             }
         }
 
         public void SaveToDisk()
         {
-            using (FileStream fs = new FileStream(_databaseName, FileMode.Create))
+            using (FileStream fs = new FileStream(_storeName, FileMode.Create))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(fs, Items);
@@ -39,21 +39,21 @@ namespace RAM
         
         public void ReadFromDisk()
         {
-            if (!File.Exists(_databaseName))
+            if (!File.Exists(_storeName))
             {
                 return;
             }
 
             try {
-                using (FileStream fs = new FileStream(_databaseName, FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream(_storeName, FileMode.OpenOrCreate))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
                     Items = bf.Deserialize(fs) as List<T>;
                 }
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                throw;
             }
         }
     }
