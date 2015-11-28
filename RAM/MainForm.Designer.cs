@@ -204,7 +204,7 @@
             this.ratePage.Padding = new System.Windows.Forms.Padding(3);
             this.ratePage.Size = new System.Drawing.Size(1144, 669);
             this.ratePage.TabIndex = 3;
-            this.ratePage.Text = "Rate (View Only)";
+            this.ratePage.Text = "Rate (view only)";
             this.ratePage.UseVisualStyleBackColor = true;
             // 
             // rateListView
