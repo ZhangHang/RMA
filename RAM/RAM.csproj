@@ -46,31 +46,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateCarrierForm.cs">
+    <Compile Include="CarrierForms\CreateCarrierForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateCarrierForm.Designer.cs">
+    <Compile Include="CarrierForms\CreateCarrierForm.Designer.cs">
       <DependentUpon>CreateCarrierForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreateRegionForm.cs">
+    <Compile Include="DataLayer\Model.cs" />
+    <Compile Include="DataLayer\Store.cs" />
+    <Compile Include="RateForms\CreateRateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateRegionForm.Designer.cs">
+    <Compile Include="RateForms\CreateRateForm.Designer.cs">
+      <DependentUpon>CreateRateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegionForms\CreateRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegionForms\CreateRegionForm.Designer.cs">
       <DependentUpon>CreateRegionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditCarrierForm.cs">
+    <Compile Include="CarrierForms\EditCarrierForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditCarrierForm.Designer.cs">
+    <Compile Include="CarrierForms\EditCarrierForm.Designer.cs">
       <DependentUpon>EditCarrierForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainRateForm.cs">
+    <Compile Include="RateForms\EditRateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainRateForm.Designer.cs">
+    <Compile Include="RateForms\EditRateForm.Designer.cs">
+      <DependentUpon>EditRateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RateForms\MainRateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RateForms\MainRateForm.Designer.cs">
       <DependentUpon>MainRateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,20 +92,26 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Store.cs" />
-    <EmbeddedResource Include="CreateCarrierForm.resx">
+    <Compile Include="Utility.cs" />
+    <EmbeddedResource Include="CarrierForms\CreateCarrierForm.resx">
       <DependentUpon>CreateCarrierForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreateRegionForm.resx">
+    <EmbeddedResource Include="RateForms\CreateRateForm.resx">
+      <DependentUpon>CreateRateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RateForms\EditRateForm.resx">
+      <DependentUpon>EditRateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegionForms\CreateRegionForm.resx">
       <DependentUpon>CreateRegionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditCarrierForm.resx">
+    <EmbeddedResource Include="CarrierForms\EditCarrierForm.resx">
       <DependentUpon>EditCarrierForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainRateForm.resx">
+    <EmbeddedResource Include="RateForms\MainRateForm.resx">
       <DependentUpon>MainRateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

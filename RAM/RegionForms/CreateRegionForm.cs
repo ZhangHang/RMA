@@ -15,15 +15,8 @@ namespace RAM
         public CreateRegionForm()
         {
             InitializeComponent();
-            xAxisTextBox.KeyPress += AxisTextBox_KeyPress;
-            yAxisTextBox.KeyPress += AxisTextBox_KeyPress;
-        }
-
-        private void AxisTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-            e.Handled = false;
-            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+            xAxisTextBox.KeyPress += Utility.TextBox_KeyPress_Filte_Number_Only;
+            yAxisTextBox.KeyPress += Utility.TextBox_KeyPress_Filte_Number_Only;
         }
 
         private string ShortName
@@ -42,26 +35,35 @@ namespace RAM
             }
         }
 
-        private double XAxis
+        private string XAxisText
         {
             get
             {
-                return Double.Parse(xAxisTextBox.Text);
+                return xAxisTextBox.Text;
             }
         }
 
-        private double YAxis
+        private string YAxisText
         {
             get
             {
-                return Double.Parse(yAxisTextBox.Text);
+                return yAxisTextBox.Text;
             }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            if(XAxisText.Count() == 0 || YAxisText.Count() == 0)
+            {
+                MessageBox.Show("You need to fill Axis fields first");
+                return;
+            }
             try
             {
+                Int32 XAxis, YAxis;
+                Int32.TryParse(XAxisText, out XAxis);
+                Int32.TryParse(YAxisText, out YAxis);
+                
                 Region newRegion = new RAM.Region { ShortName = ShortName, Description = Description, XAxis = XAxis, YAxis = YAxis };
                 newRegion.Insert();
                 RAM.Region.store.SaveToDisk();

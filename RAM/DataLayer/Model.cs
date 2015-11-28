@@ -33,12 +33,17 @@ namespace RAM
         public List<Rate> Rates = new List<Rate>();
 
         #region
+        public bool HasRate(string originRegionShortName, string destinationRegionShortName)
+        {
+            return Rates.Where(x => x.DestinationRegionShortName == destinationRegionShortName
+            && x.OriginRegionShortName == originRegionShortName).Count() > 0;
+        }
+
         public void AddRate(Rate newRate)
         {
-            if (Rates.Where(x => x.DestinationRegionShortName == newRate.DestinationRegionShortName
-             && x.OriginRegionShortName == newRate.OriginRegionShortName).Count() > 0)
+            if (HasRate(newRate.OriginRegionShortName, newRate.DestinationRegionShortName))
             {
-                throw new Exception("Duplicated rate");
+                throw new Exception("Each carrier can only have one rate per lane");
             }
 
             Rates.Add(newRate);
@@ -181,14 +186,14 @@ namespace RAM
 
         public string OriginRegionShortName;
         public string DestinationRegionShortName;
-        private Region OriginRegion
+        public Region OriginRegion
         {
             get
             {
                 return Region.store.Items.Where(x => x.ShortName == OriginRegionShortName).First();
             }
         }
-        private Region DestinationRegion
+        public Region DestinationRegion
         {
             get
             {
@@ -196,7 +201,7 @@ namespace RAM
             }
         }
         abstract public double Cost { get; }
-
+        abstract public String Description { get; }
         internal Double Distance
         {
             get
@@ -221,7 +226,7 @@ namespace RAM
     [Serializable]
     public sealed class FlatRate : Rate
     {
-        private double Totalcost;
+        public double Totalcost;
 
         public FlatRate(Region origin, Region destination, double totalcost) : base(origin, destination)
         {
@@ -230,6 +235,23 @@ namespace RAM
                 throw new Exception("Cost has to be $0 ~ $2000");
             }
             Totalcost = totalcost;
+        }
+
+        public FlatRate(string origin, string destination, double totalcost) : base(origin, destination)
+        {
+            if (totalcost < 0 || totalcost > 2000)
+            {
+                throw new Exception("Cost has to be $0 ~ $2000");
+            }
+            Totalcost = totalcost;
+        }
+
+        public override string Description
+        {
+            get
+            {
+                return String.Format("{0} to {1}, ${2} (${3} flat rate)", OriginRegionShortName, DestinationRegionShortName, Cost, Totalcost);
+            }
         }
 
         public override double Cost
@@ -244,9 +266,18 @@ namespace RAM
     [Serializable]
     public sealed class UnflatRate : Rate
     {
-        private double CostPerMile;
+        public double CostPerMile;
 
         public UnflatRate(Region origin, Region destination, double costPerMile) : base(origin, destination)
+        {
+            if (costPerMile < 0 || costPerMile > 10)
+            {
+                throw new Exception("Cost has to be $0 ~ $10 per mile");
+            }
+            CostPerMile = costPerMile;
+        }
+
+        public UnflatRate(string origin, string destination, double costPerMile) : base(origin, destination)
         {
             if (costPerMile < 0 || costPerMile > 10)
             {
@@ -260,6 +291,14 @@ namespace RAM
             get
             {
                 return CostPerMile * Distance;
+            }
+        }
+
+        public override string Description
+        {
+            get
+            {
+                return String.Format("{0} to {1}, ${2} (${3}/mile unflat rate)", OriginRegionShortName, DestinationRegionShortName, Cost, CostPerMile);
             }
         }
     }

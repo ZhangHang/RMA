@@ -35,8 +35,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.saveButton = new System.Windows.Forms.Button();
-            this.xAxisTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.yAxisTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.xAxisTextBox = new System.Windows.Forms.TextBox();
+            this.yAxisTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label2
@@ -106,23 +106,17 @@
             // 
             // xAxisTextBox
             // 
-            this.xAxisTextBox.Location = new System.Drawing.Point(155, 185);
-            this.xAxisTextBox.Mask = "00000";
+            this.xAxisTextBox.Location = new System.Drawing.Point(155, 191);
             this.xAxisTextBox.Name = "xAxisTextBox";
-            this.xAxisTextBox.Size = new System.Drawing.Size(302, 31);
-            this.xAxisTextBox.TabIndex = 13;
-            this.xAxisTextBox.Text = "0";
-            this.xAxisTextBox.ValidatingType = typeof(int);
+            this.xAxisTextBox.Size = new System.Drawing.Size(301, 31);
+            this.xAxisTextBox.TabIndex = 15;
             // 
             // yAxisTextBox
             // 
             this.yAxisTextBox.Location = new System.Drawing.Point(156, 260);
-            this.yAxisTextBox.Mask = "00000";
             this.yAxisTextBox.Name = "yAxisTextBox";
-            this.yAxisTextBox.Size = new System.Drawing.Size(302, 31);
-            this.yAxisTextBox.TabIndex = 14;
-            this.yAxisTextBox.Text = "0";
-            this.yAxisTextBox.ValidatingType = typeof(int);
+            this.yAxisTextBox.Size = new System.Drawing.Size(301, 31);
+            this.yAxisTextBox.TabIndex = 16;
             // 
             // CreateRegionForm
             // 
@@ -154,7 +148,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.MaskedTextBox xAxisTextBox;
-        private System.Windows.Forms.MaskedTextBox yAxisTextBox;
+        private System.Windows.Forms.TextBox xAxisTextBox;
+        private System.Windows.Forms.TextBox yAxisTextBox;
     }
 }

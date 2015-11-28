@@ -13,7 +13,7 @@ namespace RAM
     public partial class EditCarrierForm : Form
     {
         private Store<Carrier> CarrierStore = Carrier.store;
-        private string originSCAC;
+        private string originalSCAC;
         private Carrier carrier;
 
         private string editedSCAC
@@ -35,7 +35,7 @@ namespace RAM
         public EditCarrierForm(string carrierSCAC)
         {
             InitializeComponent();
-            originSCAC = carrierSCAC;
+            originalSCAC = carrierSCAC;
             carrier = CarrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
 
             updateButton.Click += UpdateButton_Click;
@@ -52,7 +52,7 @@ namespace RAM
                 return;
             }
 
-            if (editedSCAC != originSCAC)
+            if (editedSCAC != originalSCAC)
             {
                 if (CarrierStore.Items.Where(x => x.SCAC == editedSCAC).Count() > 0)
                 {

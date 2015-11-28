@@ -41,6 +41,8 @@
             this.columnHeader2,
             this.columnHeader3});
             this.rateListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rateListView.FullRowSelect = true;
+            this.rateListView.GridLines = true;
             this.rateListView.Location = new System.Drawing.Point(0, 0);
             this.rateListView.Name = "rateListView";
             this.rateListView.Size = new System.Drawing.Size(809, 557);
@@ -51,17 +53,17 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Origin";
-            this.columnHeader1.Width = 131;
+            this.columnHeader1.Width = 100;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Destination";
-            this.columnHeader2.Width = 151;
+            this.columnHeader2.Width = 100;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Description";
-            this.columnHeader3.Width = 164;
+            this.columnHeader3.Text = "Cost";
+            this.columnHeader3.Width = 476;
             // 
             // MainRateForm
             // 
