@@ -84,7 +84,7 @@ namespace RMA.Model
         {
             get
             {
-                return String.Format("{0} to {1}, ${2} (${3} flat rate)", OriginRegionShortName, DestinationRegionShortName, Cost, Totalcost);
+                return String.Format("{0} to {1}, ${2} (${3} total)", OriginRegionShortName, DestinationRegionShortName, Cost, Totalcost);
             }
         }
 
@@ -98,11 +98,11 @@ namespace RMA.Model
     }
 
     [Serializable]
-    public sealed class UnflatRate : Rate
+    public sealed class IncreaseRate : Rate
     {
         public double CostPerMile;
 
-        public UnflatRate(Region origin, Region destination, double costPerMile) : base(origin, destination)
+        public IncreaseRate(Region origin, Region destination, double costPerMile) : base(origin, destination)
         {
             if (costPerMile < 0 || costPerMile > 10)
             {
@@ -111,7 +111,7 @@ namespace RMA.Model
             CostPerMile = costPerMile;
         }
 
-        public UnflatRate(string origin, string destination, double costPerMile) : base(origin, destination)
+        public IncreaseRate(string origin, string destination, double costPerMile) : base(origin, destination)
         {
             if (costPerMile < 0 || costPerMile > 10)
             {
@@ -132,7 +132,7 @@ namespace RMA.Model
         {
             get
             {
-                return String.Format("{0} to {1}, ${2} (${3}/mile unflat rate)", OriginRegionShortName, DestinationRegionShortName, Cost, CostPerMile);
+                return String.Format("{0} to {1}, ${2:0.#} (${3}/mile)", OriginRegionShortName, DestinationRegionShortName, Cost, CostPerMile);
             }
         }
     }

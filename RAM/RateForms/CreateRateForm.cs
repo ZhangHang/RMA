@@ -14,7 +14,7 @@ namespace RMA
     public partial class CreateRateForm : Form
     {
         private Carrier _carrier;
-        private enum RateType { Flat, Unflat };
+        private enum RateType { Flat, Increase };
         public CreateRateForm(Carrier carrier)
         {
             InitializeComponent();
@@ -35,7 +35,7 @@ namespace RMA
             }
 
             typeComboBox.Items.Add(RateType.Flat.ToString());
-            typeComboBox.Items.Add(RateType.Unflat.ToString());
+            typeComboBox.Items.Add(RateType.Increase.ToString());
 
             typeComboBox.SelectedIndex = 0;
         }
@@ -70,8 +70,8 @@ namespace RMA
                     case RateType.Flat:
                         newRate = new FlatRate(originShortName, destinationShortName, rateCost);
                         break;
-                    case RateType.Unflat:
-                        newRate = new UnflatRate(originShortName, destinationShortName, rateCost);
+                    case RateType.Increase:
+                        newRate = new IncreaseRate(originShortName, destinationShortName, rateCost);
                         break;
                 }
 

@@ -40,21 +40,21 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.settingTabPage = new System.Windows.Forms.TabPage();
-            this.eraseButton = new System.Windows.Forms.Button();
-            this.demoDataButton = new System.Windows.Forms.Button();
             this.ratePage = new System.Windows.Forms.TabPage();
             this.rateListView = new System.Windows.Forms.ListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.settingTabPage = new System.Windows.Forms.TabPage();
+            this.eraseButton = new System.Windows.Forms.Button();
+            this.demoDataButton = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.carrierPage.SuspendLayout();
             this.regionPage.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.settingTabPage.SuspendLayout();
             this.ratePage.SuspendLayout();
+            this.settingTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -164,38 +164,6 @@
             this.columnHeader6.Text = "YAxis";
             this.columnHeader6.Width = 86;
             // 
-            // settingTabPage
-            // 
-            this.settingTabPage.Controls.Add(this.eraseButton);
-            this.settingTabPage.Controls.Add(this.demoDataButton);
-            this.settingTabPage.Location = new System.Drawing.Point(8, 39);
-            this.settingTabPage.Name = "settingTabPage";
-            this.settingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.settingTabPage.Size = new System.Drawing.Size(1144, 669);
-            this.settingTabPage.TabIndex = 2;
-            this.settingTabPage.Text = "Setting";
-            this.settingTabPage.UseVisualStyleBackColor = true;
-            // 
-            // eraseButton
-            // 
-            this.eraseButton.Location = new System.Drawing.Point(37, 147);
-            this.eraseButton.Name = "eraseButton";
-            this.eraseButton.Size = new System.Drawing.Size(206, 52);
-            this.eraseButton.TabIndex = 1;
-            this.eraseButton.Text = "Erase All Data";
-            this.eraseButton.UseVisualStyleBackColor = true;
-            this.eraseButton.Click += new System.EventHandler(this.eraseButton_Click);
-            // 
-            // demoDataButton
-            // 
-            this.demoDataButton.Location = new System.Drawing.Point(37, 52);
-            this.demoDataButton.Name = "demoDataButton";
-            this.demoDataButton.Size = new System.Drawing.Size(206, 52);
-            this.demoDataButton.TabIndex = 0;
-            this.demoDataButton.Text = "Load Demo Data";
-            this.demoDataButton.UseVisualStyleBackColor = true;
-            this.demoDataButton.Click += new System.EventHandler(this.demoDataButton_Click);
-            // 
             // ratePage
             // 
             this.ratePage.Controls.Add(this.rateListView);
@@ -241,8 +209,40 @@
             // 
             // columnHeader10
             // 
-            this.columnHeader10.Text = "Description";
-            this.columnHeader10.Width = 142;
+            this.columnHeader10.Text = "Cost";
+            this.columnHeader10.Width = 200;
+            // 
+            // settingTabPage
+            // 
+            this.settingTabPage.Controls.Add(this.eraseButton);
+            this.settingTabPage.Controls.Add(this.demoDataButton);
+            this.settingTabPage.Location = new System.Drawing.Point(8, 39);
+            this.settingTabPage.Name = "settingTabPage";
+            this.settingTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.settingTabPage.Size = new System.Drawing.Size(1144, 669);
+            this.settingTabPage.TabIndex = 2;
+            this.settingTabPage.Text = "Setting";
+            this.settingTabPage.UseVisualStyleBackColor = true;
+            // 
+            // eraseButton
+            // 
+            this.eraseButton.Location = new System.Drawing.Point(37, 147);
+            this.eraseButton.Name = "eraseButton";
+            this.eraseButton.Size = new System.Drawing.Size(206, 52);
+            this.eraseButton.TabIndex = 1;
+            this.eraseButton.Text = "Erase All Data";
+            this.eraseButton.UseVisualStyleBackColor = true;
+            this.eraseButton.Click += new System.EventHandler(this.eraseButton_Click);
+            // 
+            // demoDataButton
+            // 
+            this.demoDataButton.Location = new System.Drawing.Point(37, 52);
+            this.demoDataButton.Name = "demoDataButton";
+            this.demoDataButton.Size = new System.Drawing.Size(206, 52);
+            this.demoDataButton.TabIndex = 0;
+            this.demoDataButton.Text = "Load Demo Data";
+            this.demoDataButton.UseVisualStyleBackColor = true;
+            this.demoDataButton.Click += new System.EventHandler(this.demoDataButton_Click);
             // 
             // MainForm
             // 
@@ -257,8 +257,8 @@
             this.carrierPage.ResumeLayout(false);
             this.regionPage.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.settingTabPage.ResumeLayout(false);
             this.ratePage.ResumeLayout(false);
+            this.settingTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

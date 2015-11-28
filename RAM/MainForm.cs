@@ -270,15 +270,15 @@ namespace RMA
             Region VoidWorldRegion = new RMA.Model.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
 
             FlatRate flatRateForMasterCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 1000);
-            UnflatRate unflatRateForMasterCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 10);
+            IncreaseRate increaseRateForMasterCarrier = new IncreaseRate(DestinationCityRegion, ChaosLandRegion, 10);
 
             FlatRate flatRateForSlaveCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 800);
-            UnflatRate unflatRateForSlaveCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 9);
+            IncreaseRate increaseRateForSlaveCarrier = new IncreaseRate(DestinationCityRegion, ChaosLandRegion, 9);
 
             MasterCarrier.AddRate(flatRateForMasterCarrier);
-            MasterCarrier.AddRate(unflatRateForMasterCarrier);
+            MasterCarrier.AddRate(increaseRateForMasterCarrier);
             SlaveCarrier.AddRate(flatRateForSlaveCarrier);
-            SlaveCarrier.AddRate(unflatRateForMasterCarrier);
+            SlaveCarrier.AddRate(increaseRateForMasterCarrier);
 
             MasterCarrier.Insert();
             SlaveCarrier.Insert();

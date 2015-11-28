@@ -17,7 +17,7 @@ namespace RMA
         private Rate _rateToEdit;
         private string _originalOriginRegionShortName;
         private string _originalOriginDestinationShortName;
-        private enum RateType { Flat, Unflat };
+        private enum RateType { Flat, Increase };
 
         public EditRateForm(Carrier carrier, Rate rateToEdit)
         {
@@ -41,17 +41,17 @@ namespace RMA
 
 
             typeComboBox.Items.Add(RateType.Flat.ToString());
-            typeComboBox.Items.Add(RateType.Unflat.ToString());
+            typeComboBox.Items.Add(RateType.Increase.ToString());
 
             if (_rateToEdit is FlatRate)
             {
                 typeComboBox.SelectedIndex = 0;
                 costTextBox.Text = (_rateToEdit as FlatRate).Totalcost.ToString();
             }
-            else if (_rateToEdit is UnflatRate)
+            else if (_rateToEdit is IncreaseRate)
             {
                 typeComboBox.SelectedIndex = 1;
-                costTextBox.Text = (_rateToEdit as UnflatRate).CostPerMile.ToString();
+                costTextBox.Text = (_rateToEdit as IncreaseRate).CostPerMile.ToString();
             }
             else
             {
@@ -98,8 +98,8 @@ namespace RMA
                     case RateType.Flat:
                         newRate = new FlatRate(originShortName, destinationShortName, rateCost);
                         break;
-                    case RateType.Unflat:
-                        newRate = new UnflatRate(originShortName, destinationShortName, rateCost);
+                    case RateType.Increase:
+                        newRate = new IncreaseRate(originShortName, destinationShortName, rateCost);
                         break;
                 }
 
