@@ -7,49 +7,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RAM.Model;
 
 namespace RAM
 {
     public partial class EditRateForm : Form
     {
-        private Carrier Carrier;
-        private Rate Rate;
-        private string originalOriginRegionShortName;
-        private string originalOriginDestinationShortName;
-        enum RateType { Flat, Unflat };
+        private Carrier _carrier;
+        private Rate _rateToEdit;
+        private string _originalOriginRegionShortName;
+        private string _originalOriginDestinationShortName;
+        private enum RateType { Flat, Unflat };
+
         public EditRateForm(Carrier carrier, Rate rateToEdit)
         {
             InitializeComponent();
-            Carrier = carrier;
-            Rate = rateToEdit;
+            _carrier = carrier;
+            _rateToEdit = rateToEdit;
 
-            originalOriginRegionShortName = Rate.OriginRegionShortName;
-            originalOriginDestinationShortName = Rate.DestinationRegionShortName;
+            _originalOriginRegionShortName = _rateToEdit.OriginRegionShortName;
+            _originalOriginDestinationShortName = _rateToEdit.DestinationRegionShortName;
 
             costTextBox.KeyPress += Utility.TextBox_KeyPress_Filte_Positive_Number_Only;
 
-            foreach (var item in RAM.Region.store.Items)
+            foreach (var item in RAM.Model.Region.Store.Items)
             {
                 originComboBox.Items.Add(item.ShortName);
                 destinationComboBox.Items.Add(item.ShortName);
             }
 
-            originComboBox.SelectedItem = Rate.OriginRegionShortName;
-            destinationComboBox.SelectedItem = Rate.DestinationRegionShortName;
+            originComboBox.SelectedItem = _rateToEdit.OriginRegionShortName;
+            destinationComboBox.SelectedItem = _rateToEdit.DestinationRegionShortName;
 
 
             typeComboBox.Items.Add(RateType.Flat.ToString());
             typeComboBox.Items.Add(RateType.Unflat.ToString());
 
-            if (Rate is FlatRate)
+            if (_rateToEdit is FlatRate)
             {
                 typeComboBox.SelectedIndex = 0;
-                costTextBox.Text = (Rate as FlatRate).Totalcost.ToString();
+                costTextBox.Text = (_rateToEdit as FlatRate).Totalcost.ToString();
             }
-            else if (Rate is UnflatRate)
+            else if (_rateToEdit is UnflatRate)
             {
                 typeComboBox.SelectedIndex = 1;
-                costTextBox.Text = (Rate as UnflatRate).CostPerMile.ToString();
+                costTextBox.Text = (_rateToEdit as UnflatRate).CostPerMile.ToString();
             }
             else
             {
@@ -59,28 +61,28 @@ namespace RAM
 
         private void updateButton_Click(object sender, EventArgs e)
         {
-            string OriginShortName = originComboBox.SelectedItem.ToString();
-            string DestinationShortName = destinationComboBox.SelectedItem.ToString();
-            string CostString = costTextBox.Text;
-            RateType Type;
-            Int32 Cost;
+            string originShortName = originComboBox.SelectedItem.ToString();
+            string destinationShortName = destinationComboBox.SelectedItem.ToString();
+            string costString = costTextBox.Text;
+            RateType rateType;
+            Int32 rateCost;
             if (costTextBox.Text.Count() == 0)
             {
                 MessageBox.Show("You need fill cost field first");
                 return;
             }
-            if (OriginShortName == null || DestinationShortName == null)
+            if (originShortName == null || destinationShortName == null)
             {
                 MessageBox.Show("Not enough infomation");
                 return;
             }
 
-            Enum.TryParse<RateType>(typeComboBox.SelectedItem.ToString(), out Type);
-            Int32.TryParse(costTextBox.Text, out Cost);
+            Enum.TryParse<RateType>(typeComboBox.SelectedItem.ToString(), out rateType);
+            Int32.TryParse(costTextBox.Text, out rateCost);
 
-            if (originalOriginDestinationShortName != originalOriginRegionShortName || originalOriginDestinationShortName != DestinationShortName)
+            if (_originalOriginDestinationShortName != _originalOriginRegionShortName || _originalOriginDestinationShortName != destinationShortName)
             {
-                if (Carrier.HasRate(OriginShortName, DestinationShortName))
+                if (_carrier.HasRate(originShortName, destinationShortName))
                 {
                     MessageBox.Show("Each carrier can only have one rate per lane");
                     return;
@@ -90,19 +92,19 @@ namespace RAM
             try
             {
                 Rate newRate = null;
-                switch (Type)
+                switch (rateType)
                 {
                     case RateType.Flat:
-                        newRate = new FlatRate(OriginShortName, DestinationShortName, Cost);
+                        newRate = new FlatRate(originShortName, destinationShortName, rateCost);
                         break;
                     case RateType.Unflat:
-                        newRate = new UnflatRate(OriginShortName, DestinationShortName, Cost);
+                        newRate = new UnflatRate(originShortName, destinationShortName, rateCost);
                         break;
                 }
 
-                Carrier.RemoveRate(Rate);
-                Carrier.AddRate(newRate);
-                Carrier.store.SaveToDisk();
+                _carrier.RemoveRate(_rateToEdit);
+                _carrier.AddRate(newRate);
+                Carrier.Store.SaveToDisk();
                 MessageBox.Show("Rate has been saved");
                 this.Hide();
             }

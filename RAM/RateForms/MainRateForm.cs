@@ -7,34 +7,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RAM.Model;
 
 namespace RAM
 {
     public partial class MainRateForm : Form
     {
-        private Store<Carrier> CarrierStore;
-        private Carrier carrier;
+        private Store<Carrier> _carrierStore = Carrier.Store;
+        private Carrier _carrier;
 
-        public MainRateForm(Store<Carrier> carrierStore, string carrierSCAC)
+        public MainRateForm(string carrierSCAC)
         {
             InitializeComponent();
-            CarrierStore = carrierStore;
-            carrier = carrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
+            _carrier = _carrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
             Setup_RateList();
-            Reload_Rate_Data();
+            Reload_RateData();
         }
 
         #region Rage
-        private MenuItem editMenuItem;
-        private MenuItem deleteMenuItem;
+        private MenuItem _editMenuItem;
+        private MenuItem _deleteMenuItem;
 
         private void Setup_RateList()
         {
             rateListView.ContextMenu = new ContextMenu();
-            rateListView.ContextMenu.MenuItems.Add(new MenuItem("Create Rate", createRate));
+            rateListView.ContextMenu.MenuItems.Add(new MenuItem("Create Rate", Create_Rate));
 
-            editMenuItem = new MenuItem("Edit", editRate);
-            deleteMenuItem = new MenuItem("Delete", deleteRate);
+            _editMenuItem = new MenuItem("Edit", Edit_Rate);
+            _deleteMenuItem = new MenuItem("Delete", Delete_Rate);
 
             rateListView.MouseDown += RarrierListView_MouseDown;
         }
@@ -45,19 +45,19 @@ namespace RAM
 
             if (rateListView.FocusedItem.Bounds.Contains(e.Location))
             {
-                rateListView.ContextMenu.MenuItems.Add(editMenuItem);
-                rateListView.ContextMenu.MenuItems.Add(deleteMenuItem);
+                rateListView.ContextMenu.MenuItems.Add(_editMenuItem);
+                rateListView.ContextMenu.MenuItems.Add(_deleteMenuItem);
             }
             else
             {
-                rateListView.ContextMenu.MenuItems.Remove(editMenuItem);
-                rateListView.ContextMenu.MenuItems.Remove(deleteMenuItem);
+                rateListView.ContextMenu.MenuItems.Remove(_editMenuItem);
+                rateListView.ContextMenu.MenuItems.Remove(_deleteMenuItem);
             }
         }
 
-        private void createRate(object sender, EventArgs e)
+        private void Create_Rate(object sender, EventArgs e)
         {
-            CreateRateForm createForm = new CreateRateForm(carrier);
+            CreateRateForm createForm = new CreateRateForm(_carrier);
             createForm.FormClosed += CreateForm_FormClosed;
             createForm.ShowDialog();
         }
@@ -66,21 +66,21 @@ namespace RAM
         {
             get
             {
-                string FocusedRateDestinationShortName = rateListView.FocusedItem.SubItems[1].Text;
-                string FocusedRateOriginShortName = rateListView.FocusedItem.Text;
-                return carrier.Rates.Where(x => 
-                        x.OriginRegionShortName == FocusedRateOriginShortName 
-                        && x.DestinationRegionShortName == FocusedRateDestinationShortName).First();
+                string destinationRegionShortName = rateListView.FocusedItem.SubItems[1].Text;
+                string originRegionShortName = rateListView.FocusedItem.Text;
+                return _carrier.Rates.Where(x => 
+                        x.OriginRegionShortName == originRegionShortName 
+                        && x.DestinationRegionShortName == destinationRegionShortName).First();
             }
         }
 
-        private void deleteRate(object sender, EventArgs e)
+        private void Delete_Rate(object sender, EventArgs e)
         {
             try
             {
-                carrier.RemoveRate(FocusedRate);
-                CarrierStore.SaveToDisk();
-                Reload_Rate_Data();
+                _carrier.RemoveRate(FocusedRate);
+                _carrierStore.SaveToDisk();
+                Reload_RateData();
                 MessageBox.Show("Carrier has been deleted");
             }
             catch (Exception error)
@@ -90,28 +90,28 @@ namespace RAM
             }
         }
 
-        private void editRate(object sender, EventArgs e)
+        private void Edit_Rate(object sender, EventArgs e)
         {
-           EditRateForm editForm = new EditRateForm(carrier,FocusedRate);
+           EditRateForm editForm = new EditRateForm(_carrier,FocusedRate);
            editForm.FormClosed += EditForm_FormClosed;
            editForm.ShowDialog();
         }
 
         private void CreateForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reload_Rate_Data();
+            Reload_RateData();
         }
 
         private void EditForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reload_Rate_Data();
+            Reload_RateData();
         }
 
-        private void Reload_Rate_Data()
+        private void Reload_RateData()
         {
             rateListView.Items.Clear();
 
-            foreach (Rate item in carrier.Rates)
+            foreach (Rate item in _carrier.Rates)
             {
                 ListViewItem listViewItem = new ListViewItem(item.OriginRegionShortName);
                 listViewItem.SubItems.Add(item.DestinationRegionShortName);

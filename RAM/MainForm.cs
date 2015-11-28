@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RAM.Model;
 
 namespace RAM
 {
     public partial class MainForm : Form
     {
-        private Store<Carrier> CarrierStore = RAM.Carrier.store;
-        private Store<Region> RegionStore = RAM.Region.store;
+        private Store<Carrier> _carrierStore = Carrier.Store;
+        private Store<Region> _regionStore = RAM.Model.Region.Store;
 
         public MainForm()
         {
@@ -24,32 +25,32 @@ namespace RAM
         {
             Setup_CarrierList();
             Setup_RegionList();
-            Reload_Carrier_Data();
-            Reload_Region_Data();
+            Reload_CarrierData();
+            Reload_RegionData();
         }
 
         private void Load_DemoData()
         {
-            if (RegionStore.Items.Count == 0)
+            if (_regionStore.Items.Count == 0)
             {
-                RegionStore.Items.Clear();
-                CarrierStore.Items.Clear();
-                RegionStore.SaveToDisk();
-                CarrierStore.SaveToDisk();
+                _regionStore.Items.Clear();
+                _carrierStore.Items.Clear();
+                _regionStore.SaveToDisk();
+                _carrierStore.SaveToDisk();
 
                 Carrier MasterCarrier = new Carrier { SCAC = "MAST", Name = "Master Carrier" };
                 Carrier SlaveCarrier = new Carrier { SCAC = "SLAV", Name = "Slave Carrier" };
 
-                Region OriginCityRegion = new RAM.Region { XAxis = 0, YAxis = 0, ShortName = "OC", Description = "Origin City" };
-                Region DestinationCityRegion = new RAM.Region { XAxis = 13, YAxis = 13, ShortName = "DC", Description = "Destination City" };
-                Region ChaosLandRegion = new RAM.Region { XAxis = 100, YAxis = 100, ShortName = "CL", Description = "Chaos Land" };
-                Region VoidWorldRegion = new RAM.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
+                Region OriginCityRegion = new RAM.Model.Region { XAxis = 0, YAxis = 0, ShortName = "OC", Description = "Origin City" };
+                Region DestinationCityRegion = new RAM.Model.Region { XAxis = 13, YAxis = 13, ShortName = "DC", Description = "Destination City" };
+                Region ChaosLandRegion = new RAM.Model.Region { XAxis = 100, YAxis = 100, ShortName = "CL", Description = "Chaos Land" };
+                Region VoidWorldRegion = new RAM.Model.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
 
                 FlatRate flatRateForMasterCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 1000);
                 UnflatRate unflatRateForMasterCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 10);
 
                 FlatRate flatRateForSlaveCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 800);
-                UnflatRate unflatRateForSlaveCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 19);
+                UnflatRate unflatRateForSlaveCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 9);
 
                 MasterCarrier.AddRate(flatRateForMasterCarrier);
                 MasterCarrier.AddRate(unflatRateForMasterCarrier);
@@ -64,24 +65,24 @@ namespace RAM
                 ChaosLandRegion.Insert();
                 VoidWorldRegion.Insert();
 
-                CarrierStore.SaveToDisk();
-                RegionStore.SaveToDisk();
+                _carrierStore.SaveToDisk();
+                _regionStore.SaveToDisk();
             }
         }
 
         #region Carrier
-        private MenuItem editCarrierMenuItem;
-        private MenuItem deleteCarrierMenuItem;
+        private MenuItem _editCarrierMenuItem;
+        private MenuItem _deleteCarrierMenuItem;
 
         private void Setup_CarrierList()
         {
             carrierListView.DoubleClick += CarrierListView_DoubleClick;
 
             carrierListView.ContextMenu = new ContextMenu();
-            carrierListView.ContextMenu.MenuItems.Add(new MenuItem("Create Carrier", createCarrier));
+            carrierListView.ContextMenu.MenuItems.Add(new MenuItem("Create Carrier", Create_Carrier));
 
-            editCarrierMenuItem = new MenuItem("Edit", editCarrier);
-            deleteCarrierMenuItem = new MenuItem("Delete", deleteCarrier);
+            _editCarrierMenuItem = new MenuItem("Edit", Edit_Carrier);
+            _deleteCarrierMenuItem = new MenuItem("Delete", Delete_Carrier);
 
             carrierListView.MouseDown += CarrierListView_MouseDown;
         }
@@ -92,24 +93,24 @@ namespace RAM
 
             if (carrierListView.FocusedItem.Bounds.Contains(e.Location))
             {
-                carrierListView.ContextMenu.MenuItems.Add(editCarrierMenuItem);
-                carrierListView.ContextMenu.MenuItems.Add(deleteCarrierMenuItem);
+                carrierListView.ContextMenu.MenuItems.Add(_editCarrierMenuItem);
+                carrierListView.ContextMenu.MenuItems.Add(_deleteCarrierMenuItem);
             }
             else
             {
-                carrierListView.ContextMenu.MenuItems.Remove(editCarrierMenuItem);
-                carrierListView.ContextMenu.MenuItems.Remove(deleteCarrierMenuItem);
+                carrierListView.ContextMenu.MenuItems.Remove(_editCarrierMenuItem);
+                carrierListView.ContextMenu.MenuItems.Remove(_deleteCarrierMenuItem);
             }
         }
 
-        private void createCarrier(object sender, EventArgs e)
+        private void Create_Carrier(object sender, EventArgs e)
         {
             CreateCarrierForm createForm = new CreateCarrierForm();
             createForm.FormClosed += CreateCarrierForm_FormClosed;
             createForm.ShowDialog();
         }
 
-        private string FocusedCarrierSCAC
+        private string _focusedCarrierSCAC
         {
             get
             {
@@ -117,25 +118,25 @@ namespace RAM
             }
         }
 
-        private void deleteCarrier(object sender, EventArgs e)
+        private void Delete_Carrier(object sender, EventArgs e)
         {
-            Carrier itemToDelete = CarrierStore.Items.Where(x => x.SCAC == FocusedCarrierSCAC).First();
-            CarrierStore.Items.Remove(itemToDelete);
-            CarrierStore.SaveToDisk();
-            Reload_Carrier_Data();
+            Carrier itemToDelete = _carrierStore.Items.Where(x => x.SCAC == _focusedCarrierSCAC).First();
+            _carrierStore.Items.Remove(itemToDelete);
+            _carrierStore.SaveToDisk();
+            Reload_CarrierData();
             MessageBox.Show("Carrier has been deleted");
         }
 
-        private void editCarrier(object sender, EventArgs e)
+        private void Edit_Carrier(object sender, EventArgs e)
         {
-            EditCarrierForm editForm = new EditCarrierForm(FocusedCarrierSCAC);
+            EditCarrierForm editForm = new EditCarrierForm(_focusedCarrierSCAC);
             editForm.FormClosed += EditCarrierForm_FormClosed;
             editForm.ShowDialog();
         }
 
         private void CreateCarrierForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reload_Carrier_Data();
+            Reload_CarrierData();
         }
 
         private void CarrierListView_DoubleClick(object sender, EventArgs e)
@@ -143,20 +144,20 @@ namespace RAM
             if (carrierListView.SelectedItems.Count == 0) return;
 
             string carrierSCAC = carrierListView.SelectedItems[0].Text;
-            MainRateForm rateForm = new MainRateForm(CarrierStore, carrierSCAC);
+            MainRateForm rateForm = new MainRateForm(carrierSCAC);
             rateForm.ShowDialog();
         }
 
         private void EditCarrierForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reload_Carrier_Data();
+            Reload_CarrierData();
         }
 
-        private void Reload_Carrier_Data()
+        private void Reload_CarrierData()
         {
             carrierListView.Items.Clear();
 
-            foreach (Carrier item in CarrierStore.Items)
+            foreach (Carrier item in _carrierStore.Items)
             {
                 ListViewItem listViewItem = new ListViewItem(item.SCAC);
                 listViewItem.SubItems.Add(item.Name);
@@ -167,14 +168,14 @@ namespace RAM
         #endregion
 
         #region Region
-        private MenuItem deleteRegionMenuItem;
+        private MenuItem _deleteRegionMenuItem;
 
         private void Setup_RegionList()
         {
             regionListView.ContextMenu = new ContextMenu();
-            regionListView.ContextMenu.MenuItems.Add(new MenuItem("Create Region", createRegion));
+            regionListView.ContextMenu.MenuItems.Add(new MenuItem("Create Region", Create_Region));
 
-            deleteRegionMenuItem = new MenuItem("Delete", deleteRegion);
+            _deleteRegionMenuItem = new MenuItem("Delete", Delete_Region);
 
             regionListView.MouseDown += RegionListView_MouseDown;
         }
@@ -185,22 +186,22 @@ namespace RAM
 
             if (regionListView.FocusedItem.Bounds.Contains(e.Location))
             {
-                regionListView.ContextMenu.MenuItems.Add(deleteRegionMenuItem);
+                regionListView.ContextMenu.MenuItems.Add(_deleteRegionMenuItem);
             }
             else
             {
-                regionListView.ContextMenu.MenuItems.Remove(deleteRegionMenuItem);
+                regionListView.ContextMenu.MenuItems.Remove(_deleteRegionMenuItem);
             }
         }
 
-        private void createRegion(object sender, EventArgs e)
+        private void Create_Region(object sender, EventArgs e)
         {
             CreateRegionForm createForm = new CreateRegionForm();
             createForm.FormClosed += CreateRegionForm_FormClosed;
             createForm.ShowDialog();
         }
 
-        private string FocusedRegionShortName
+        private string _focusedRegionShortName
         {
             get
             {
@@ -208,14 +209,14 @@ namespace RAM
             }
         }
 
-        private void deleteRegion(object sender, EventArgs e)
+        private void Delete_Region(object sender, EventArgs e)
         {
-            Region itemToDelete = RegionStore.Items
-                .Where(x => x.ShortName == FocusedRegionShortName).First();
-            List<string> usedOriginRegionShortNames = Carrier.store.Items
+            Region itemToDelete = _regionStore.Items
+                .Where(x => x.ShortName == _focusedRegionShortName).First();
+            List<string> usedOriginRegionShortNames = Carrier.Store.Items
                 .SelectMany(x => x.Rates)
                 .Select(x => x.OriginRegionShortName).Distinct().ToList();
-            List<string> usedDestinationRegionShortNames = Carrier.store.Items
+            List<string> usedDestinationRegionShortNames = Carrier.Store.Items
                 .SelectMany(x => x.Rates)
                 .Select(x => x.DestinationRegionShortName).Distinct().ToList();
             List<string> allUsedRegionShortNames = usedDestinationRegionShortNames
@@ -230,15 +231,15 @@ namespace RAM
             }
 
             itemToDelete.Delete();
-            RegionStore.SaveToDisk();
-            Reload_Region_Data();
+            _regionStore.SaveToDisk();
+            Reload_RegionData();
 
             MessageBox.Show("Region has been deleted");
         }
 
         private void CreateRegionForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reload_Region_Data();
+            Reload_RegionData();
         }
 
         private void RegionListView_DoubleClick(object sender, EventArgs e)
@@ -247,11 +248,11 @@ namespace RAM
 
         }
 
-        private void Reload_Region_Data()
+        private void Reload_RegionData()
         {
             regionListView.Items.Clear();
 
-            foreach (Region item in RegionStore.Items)
+            foreach (Region item in _regionStore.Items)
             {
                 ListViewItem listViewItem = new ListViewItem(item.ShortName);
                 listViewItem.SubItems.Add(item.Description);

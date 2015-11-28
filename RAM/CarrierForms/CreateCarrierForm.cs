@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RAM.Model;
 
 namespace RAM
 {
     public partial class CreateCarrierForm : Form
     {
-        private Store<Carrier> CarrierStore = Carrier.store;
+        private Store<Carrier> _carrierStore = Carrier.Store;
 
-        private string editedSCAC
+        private string _editedSCAC
         {
             get
             {
@@ -22,7 +23,7 @@ namespace RAM
             }
         }
 
-        private string editedName
+        private string _editedName
         {
             get
             {
@@ -41,9 +42,9 @@ namespace RAM
         {
             try
             {
-                Carrier newCarrier = new Carrier { SCAC = editedSCAC, Name = editedName };
+                Carrier newCarrier = new Carrier { SCAC = _editedSCAC, Name = _editedName };
                 newCarrier.Insert();
-                CarrierStore.SaveToDisk();
+                _carrierStore.SaveToDisk();
                 this.Close();
             }
             catch (Exception error)

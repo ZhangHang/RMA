@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RAM.Model;
 
 namespace RAM
 {
     public partial class EditCarrierForm : Form
     {
-        private Store<Carrier> CarrierStore = Carrier.store;
-        private string originalSCAC;
-        private Carrier carrier;
+        private Store<Carrier> _carrierStore = Carrier.Store;
+        private string _originalSCAC;
+        private Carrier _carrier;
 
-        private string editedSCAC
+        private string _editedSCAC
         {
             get
             {
@@ -24,7 +25,7 @@ namespace RAM
             }
         }
 
-        private string editedName
+        private string _editedName
         {
             get
             {
@@ -35,26 +36,26 @@ namespace RAM
         public EditCarrierForm(string carrierSCAC)
         {
             InitializeComponent();
-            originalSCAC = carrierSCAC;
-            carrier = CarrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
+            _originalSCAC = carrierSCAC;
+            _carrier = _carrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
 
             updateButton.Click += UpdateButton_Click;
 
-            sCACTextBox.Text = carrier.SCAC;
-            nameTextBox.Text = carrier.Name;
+            sCACTextBox.Text = _carrier.SCAC;
+            nameTextBox.Text = _carrier.Name;
         }
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-            if (editedName == carrier.Name && editedSCAC == carrier.SCAC)
+            if (_editedName == _carrier.Name && _editedSCAC == _carrier.SCAC)
             {
                 MessageBox.Show("Nothing to update");
                 return;
             }
 
-            if (editedSCAC != originalSCAC)
+            if (_editedSCAC != _originalSCAC)
             {
-                if (CarrierStore.Items.Where(x => x.SCAC == editedSCAC).Count() > 0)
+                if (_carrierStore.Items.Where(x => x.SCAC == _editedSCAC).Count() > 0)
                 {
                     MessageBox.Show("Duplicated SCAC");
                     return;
@@ -63,17 +64,17 @@ namespace RAM
 
             try
             {
-                carrier.Name = editedName;
-                carrier.SCAC = editedSCAC;
-                carrier.UpdateValidation();
-                Carrier.store.SaveToDisk();
+                _carrier.Name = _editedName;
+                _carrier.SCAC = _editedSCAC;
+                _carrier.UpdateValidation();
+                Carrier.Store.SaveToDisk();
                 MessageBox.Show("Carrier has been updated");
                 this.Close();
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
-                Carrier.store.readFromDisk();
+                Carrier.Store.ReadFromDisk();
             }
         }
     }

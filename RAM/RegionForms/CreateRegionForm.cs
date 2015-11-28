@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RAM.Model;
 
 namespace RAM
 {
@@ -19,7 +20,7 @@ namespace RAM
             yAxisTextBox.KeyPress += Utility.TextBox_KeyPress_Filte_Number_Only;
         }
 
-        private string ShortName
+        private string _shortName
         {
             get
             {
@@ -27,7 +28,7 @@ namespace RAM
             }
         }
 
-        private string Description
+        private string _description
         {
             get
             {
@@ -35,7 +36,7 @@ namespace RAM
             }
         }
 
-        private string XAxisText
+        private string _xAxisText
         {
             get
             {
@@ -43,7 +44,7 @@ namespace RAM
             }
         }
 
-        private string YAxisText
+        private string _yAxisText
         {
             get
             {
@@ -53,20 +54,20 @@ namespace RAM
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if(XAxisText.Count() == 0 || YAxisText.Count() == 0)
+            if(_xAxisText.Count() == 0 || _yAxisText.Count() == 0)
             {
                 MessageBox.Show("You need to fill Axis fields first");
                 return;
             }
             try
             {
-                Int32 XAxis, YAxis;
-                Int32.TryParse(XAxisText, out XAxis);
-                Int32.TryParse(YAxisText, out YAxis);
-                
-                Region newRegion = new RAM.Region { ShortName = ShortName, Description = Description, XAxis = XAxis, YAxis = YAxis };
+                Int32 xAxis, yAxis;
+                Int32.TryParse(_xAxisText, out xAxis);
+                Int32.TryParse(_yAxisText, out yAxis);
+
+                RAM.Model.Region newRegion = new RAM.Model.Region { ShortName = _shortName, Description = _description, XAxis = xAxis, YAxis = yAxis };
                 newRegion.Insert();
-                RAM.Region.store.SaveToDisk();
+                RAM.Model.Region.Store.SaveToDisk();
                 this.Close();
             }
             catch (Exception error)

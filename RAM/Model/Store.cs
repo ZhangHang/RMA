@@ -10,28 +10,33 @@ namespace RAM
 {
     public class Store<T>
     {
-        private string DatabaseName;
+        private string _databaseName;
         public List<T> Items = new List<T>();
 
         public Store(string storeName)
         {
-            DatabaseName = storeName;
-            readFromDisk();
+            _databaseName = storeName;
+            ReadFromDisk();
         }
 
         public void SaveToDisk()
         {
-            using (FileStream fs = new FileStream(DatabaseName, FileMode.Create))
+            using (FileStream fs = new FileStream(_databaseName, FileMode.Create))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(fs, Items);
             }
         }
         
-        public void readFromDisk()
+        public void ReadFromDisk()
         {
+            if (!File.Exists(_databaseName))
+            {
+                return;
+            }
+
             try {
-                using (FileStream fs = new FileStream(DatabaseName, FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream(_databaseName, FileMode.OpenOrCreate))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
                     Items = bf.Deserialize(fs) as List<T>;

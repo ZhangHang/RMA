@@ -52,8 +52,11 @@
     <Compile Include="CarrierForms\CreateCarrierForm.Designer.cs">
       <DependentUpon>CreateCarrierForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataLayer\Model.cs" />
-    <Compile Include="DataLayer\Store.cs" />
+    <Compile Include="Model\Carrier.cs" />
+    <Compile Include="Model\ICRUD.cs" />
+    <Compile Include="Model\Rate.cs" />
+    <Compile Include="Model\Region.cs" />
+    <Compile Include="Model\Store.cs" />
     <Compile Include="RateForms\CreateRateForm.cs">
       <SubType>Form</SubType>
     </Compile>
