@@ -43,7 +43,8 @@ namespace RAM
         {
             if (e.Button != MouseButtons.Right) return;
 
-            if (rateListView.FocusedItem.Bounds.Contains(e.Location))
+            if (rateListView.FocusedItem != null && 
+                rateListView.FocusedItem.Bounds.Contains(e.Location))
             {
                 rateListView.ContextMenu.MenuItems.Add(_editMenuItem);
                 rateListView.ContextMenu.MenuItems.Add(_deleteMenuItem);

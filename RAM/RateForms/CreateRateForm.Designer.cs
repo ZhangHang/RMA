@@ -87,6 +87,7 @@
             // 
             // originComboBox
             // 
+            this.originComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.originComboBox.FormattingEnabled = true;
             this.originComboBox.Location = new System.Drawing.Point(239, 40);
             this.originComboBox.Name = "originComboBox";
@@ -95,6 +96,7 @@
             // 
             // destinationComboBox
             // 
+            this.destinationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.destinationComboBox.FormattingEnabled = true;
             this.destinationComboBox.Location = new System.Drawing.Point(239, 96);
             this.destinationComboBox.Name = "destinationComboBox";
@@ -103,6 +105,7 @@
             // 
             // typeComboBox
             // 
+            this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Location = new System.Drawing.Point(239, 156);
             this.typeComboBox.Name = "typeComboBox";

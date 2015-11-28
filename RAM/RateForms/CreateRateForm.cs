@@ -42,22 +42,23 @@ namespace RAM
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string originShortName = originComboBox.SelectedItem.ToString();
-            string destinationShortName = destinationComboBox.SelectedItem.ToString();
-            string costString = costTextBox.Text;
-            RateType rateType;
-            Int32 rateCost;
-            if (costTextBox.Text.Count() == 0)
-            {
-                MessageBox.Show("You need fill cost field first");
-                return;
-            }
-            if (originShortName == null || destinationShortName == null)
+            if (originComboBox.SelectedItem == null || destinationComboBox.SelectedItem == null)
             {
                 MessageBox.Show("Not enough infomation");
                 return;
             }
 
+            if (costTextBox.Text.Count() == 0)
+            {
+                MessageBox.Show("You need fill cost field first");
+                return;
+            }
+
+            string originShortName = originComboBox.SelectedItem.ToString();
+            string destinationShortName = destinationComboBox.SelectedItem.ToString();
+            string costString = costTextBox.Text;
+            RateType rateType;
+            Int32 rateCost;            
             Enum.TryParse<RateType>(typeComboBox.SelectedItem.ToString(), out rateType);
             Int32.TryParse(costTextBox.Text, out rateCost);
 
@@ -77,7 +78,7 @@ namespace RAM
                 _carrier.AddRate(newRate);
                 Carrier.Store.SaveToDisk();
                 MessageBox.Show("Rate has been saved");
-                this.Hide();
+                this.Close();
             }
             catch (Exception error)
             {

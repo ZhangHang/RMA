@@ -57,7 +57,8 @@ namespace RAM
         {
             if (e.Button != MouseButtons.Right) return;
 
-            if (carrierListView.FocusedItem.Bounds.Contains(e.Location))
+            if (carrierListView.FocusedItem != null && 
+                carrierListView.FocusedItem.Bounds.Contains(e.Location))
             {
                 carrierListView.ContextMenu.MenuItems.Add(_editCarrierMenuItem);
                 carrierListView.ContextMenu.MenuItems.Add(_deleteCarrierMenuItem);
@@ -150,7 +151,8 @@ namespace RAM
         {
             if (e.Button != MouseButtons.Right) return;
 
-            if (regionListView.FocusedItem.Bounds.Contains(e.Location))
+            if (regionListView.FocusedItem != null && 
+                regionListView.FocusedItem.Bounds.Contains(e.Location))
             {
                 regionListView.ContextMenu.MenuItems.Add(_deleteRegionMenuItem);
             }
