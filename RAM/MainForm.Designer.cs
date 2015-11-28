@@ -41,8 +41,8 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.settingTabPage = new System.Windows.Forms.TabPage();
-            this.demoDataButton = new System.Windows.Forms.Button();
             this.eraseButton = new System.Windows.Forms.Button();
+            this.demoDataButton = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.CarrierPage.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -166,16 +166,6 @@
             this.settingTabPage.Text = "Setting";
             this.settingTabPage.UseVisualStyleBackColor = true;
             // 
-            // demoDataButton
-            // 
-            this.demoDataButton.Location = new System.Drawing.Point(37, 52);
-            this.demoDataButton.Name = "demoDataButton";
-            this.demoDataButton.Size = new System.Drawing.Size(206, 52);
-            this.demoDataButton.TabIndex = 0;
-            this.demoDataButton.Text = "Load Demo Data";
-            this.demoDataButton.UseVisualStyleBackColor = true;
-            this.demoDataButton.Click += new System.EventHandler(this.demoDataButton_Click);
-            // 
             // eraseButton
             // 
             this.eraseButton.Location = new System.Drawing.Point(37, 147);
@@ -186,6 +176,16 @@
             this.eraseButton.UseVisualStyleBackColor = true;
             this.eraseButton.Click += new System.EventHandler(this.eraseButton_Click);
             // 
+            // demoDataButton
+            // 
+            this.demoDataButton.Location = new System.Drawing.Point(37, 52);
+            this.demoDataButton.Name = "demoDataButton";
+            this.demoDataButton.Size = new System.Drawing.Size(206, 52);
+            this.demoDataButton.TabIndex = 0;
+            this.demoDataButton.Text = "Load Demo Data";
+            this.demoDataButton.UseVisualStyleBackColor = true;
+            this.demoDataButton.Click += new System.EventHandler(this.demoDataButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -193,7 +193,7 @@
             this.ClientSize = new System.Drawing.Size(1160, 716);
             this.Controls.Add(this.tabControl);
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "Rate Management";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl.ResumeLayout(false);
             this.CarrierPage.ResumeLayout(false);

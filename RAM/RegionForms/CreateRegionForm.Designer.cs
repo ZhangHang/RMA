@@ -133,7 +133,7 @@
             this.Controls.Add(this.descriptionTextBox);
             this.Controls.Add(this.shortNameTextBox);
             this.Name = "CreateRegionForm";
-            this.Text = "CreateRegionForm";
+            this.Text = "Create a Region";
             this.ResumeLayout(false);
             this.PerformLayout();
 

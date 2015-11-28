@@ -84,7 +84,7 @@
             this.sCACTextBox.Size = new System.Drawing.Size(301, 31);
             this.sCACTextBox.TabIndex = 6;
             // 
-            // CreateCarrier
+            // CreateCarrierForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,8 +94,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.sCACTextBox);
-            this.Name = "CreateCarrier";
-            this.Text = "CreateCarrier";
+            this.Name = "CreateCarrierForm";
+            this.Text = "Create a Carrier";
             this.ResumeLayout(false);
             this.PerformLayout();
 

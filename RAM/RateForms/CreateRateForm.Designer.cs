@@ -134,7 +134,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "CreateRateForm";
-            this.Text = "CreateRateForm";
+            this.Text = "Create a Rate";
             this.ResumeLayout(false);
             this.PerformLayout();
 

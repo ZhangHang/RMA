@@ -95,7 +95,7 @@
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.sCACTextBox);
             this.Name = "EditCarrierForm";
-            this.Text = "EditCarrierForm";
+            this.Text = "Edit Carrier";
             this.ResumeLayout(false);
             this.PerformLayout();
 

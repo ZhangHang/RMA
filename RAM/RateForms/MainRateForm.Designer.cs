@@ -72,7 +72,7 @@
             this.ClientSize = new System.Drawing.Size(809, 557);
             this.Controls.Add(this.rateListView);
             this.Name = "MainRateForm";
-            this.Text = "MainRateForm";
+            this.Text = "Rates for Current Carrier";
             this.ResumeLayout(false);
 
         }
