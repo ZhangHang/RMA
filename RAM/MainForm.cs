@@ -27,6 +27,7 @@ namespace RAM
             Setup_RegionList();
             Reload_CarrierData();
             Reload_RegionData();
+            Reload_RateData();
         }
 
         #region TabControl
@@ -34,8 +35,10 @@ namespace RAM
         {
             Reload_CarrierData();
             Reload_RegionData();
+            Reload_RateData();
         }
         #endregion
+
         #region Carrier
         private MenuItem _editCarrierMenuItem;
         private MenuItem _deleteCarrierMenuItem;
@@ -57,7 +60,7 @@ namespace RAM
         {
             if (e.Button != MouseButtons.Right) return;
 
-            if (carrierListView.FocusedItem != null && 
+            if (carrierListView.FocusedItem != null &&
                 carrierListView.FocusedItem.Bounds.Contains(e.Location))
             {
                 carrierListView.ContextMenu.MenuItems.Add(_editCarrierMenuItem);
@@ -151,7 +154,7 @@ namespace RAM
         {
             if (e.Button != MouseButtons.Right) return;
 
-            if (regionListView.FocusedItem != null && 
+            if (regionListView.FocusedItem != null &&
                 regionListView.FocusedItem.Bounds.Contains(e.Location))
             {
                 regionListView.ContextMenu.MenuItems.Add(_deleteRegionMenuItem);
@@ -232,6 +235,25 @@ namespace RAM
 
         #endregion
 
+        #region Rate
+        
+        private void Reload_RateData()
+        {
+            rateListView.Items.Clear();
+
+            foreach (Carrier carrier in _carrierStore.Items)
+            {
+                foreach (Rate item in carrier.Rates)
+                {
+                    ListViewItem listViewItem = new ListViewItem(carrier.SCAC);
+                    listViewItem.SubItems.Add(item.OriginRegionShortName);
+                    listViewItem.SubItems.Add(item.DestinationRegionShortName);
+                    listViewItem.SubItems.Add(item.Description);
+                    rateListView.Items.Add(listViewItem);
+                }
+            }
+        }
+        #endregion
 
         #region Setting
         private void demoDataButton_Click(object sender, EventArgs e)
@@ -273,7 +295,7 @@ namespace RAM
         }
 
         private void eraseButton_Click(object sender, EventArgs e)
-       {
+        {
             _regionStore.Erase();
             _carrierStore.Erase();
 

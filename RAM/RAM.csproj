@@ -81,11 +81,11 @@
     <Compile Include="RateForms\EditRateForm.Designer.cs">
       <DependentUpon>EditRateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RateForms\MainRateForm.cs">
+    <Compile Include="RateForms\CarrierRateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RateForms\MainRateForm.Designer.cs">
-      <DependentUpon>MainRateForm.cs</DependentUpon>
+    <Compile Include="RateForms\CarrierRateForm.Designer.cs">
+      <DependentUpon>CarrierRateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -114,8 +114,8 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RateForms\MainRateForm.resx">
-      <DependentUpon>MainRateForm.cs</DependentUpon>
+    <EmbeddedResource Include="RateForms\CarrierRateForm.resx">
+      <DependentUpon>CarrierRateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
