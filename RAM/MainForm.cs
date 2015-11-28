@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RAM.Model;
+using RMA.Model;
 
-namespace RAM
+namespace RMA
 {
     public partial class MainForm : Form
     {
         private Store<Carrier> _carrierStore = Carrier.Store;
-        private Store<Region> _regionStore = RAM.Model.Region.Store;
+        private Store<Region> _regionStore = RMA.Model.Region.Store;
 
         public MainForm()
         {
@@ -264,10 +264,10 @@ namespace RAM
             Carrier MasterCarrier = new Carrier { SCAC = "MAST", Name = "Master Carrier" };
             Carrier SlaveCarrier = new Carrier { SCAC = "SLAV", Name = "Slave Carrier" };
 
-            Region OriginCityRegion = new RAM.Model.Region { XAxis = 0, YAxis = 0, ShortName = "OC", Description = "Origin City" };
-            Region DestinationCityRegion = new RAM.Model.Region { XAxis = 13, YAxis = 13, ShortName = "DC", Description = "Destination City" };
-            Region ChaosLandRegion = new RAM.Model.Region { XAxis = 100, YAxis = 100, ShortName = "CL", Description = "Chaos Land" };
-            Region VoidWorldRegion = new RAM.Model.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
+            Region OriginCityRegion = new RMA.Model.Region { XAxis = 0, YAxis = 0, ShortName = "OC", Description = "Origin City" };
+            Region DestinationCityRegion = new RMA.Model.Region { XAxis = 13, YAxis = 13, ShortName = "DC", Description = "Destination City" };
+            Region ChaosLandRegion = new RMA.Model.Region { XAxis = 100, YAxis = 100, ShortName = "CL", Description = "Chaos Land" };
+            Region VoidWorldRegion = new RMA.Model.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
 
             FlatRate flatRateForMasterCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 1000);
             UnflatRate unflatRateForMasterCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 10);

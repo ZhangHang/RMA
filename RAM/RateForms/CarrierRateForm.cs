@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RAM.Model;
+using RMA.Model;
 
-namespace RAM
+namespace RMA
 {
     public partial class MainRateForm : Form
     {

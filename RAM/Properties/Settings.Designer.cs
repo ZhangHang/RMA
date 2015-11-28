@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RAM.Properties
+namespace RMA.Properties
 {
 
 

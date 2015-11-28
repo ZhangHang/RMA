@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RAM.Model;
+using RMA.Model;
 
-namespace RAM
+namespace RMA
 {
     public partial class CreateRegionForm : Form
     {
@@ -65,9 +65,9 @@ namespace RAM
                 Int32.TryParse(_xAxisText, out xAxis);
                 Int32.TryParse(_yAxisText, out yAxis);
 
-                RAM.Model.Region newRegion = new RAM.Model.Region { ShortName = _shortName, Description = _description, XAxis = xAxis, YAxis = yAxis };
+                RMA.Model.Region newRegion = new RMA.Model.Region { ShortName = _shortName, Description = _description, XAxis = xAxis, YAxis = yAxis };
                 newRegion.Insert();
-                RAM.Model.Region.Store.SaveToDisk();
+                RMA.Model.Region.Store.SaveToDisk();
                 this.Close();
             }
             catch (Exception error)

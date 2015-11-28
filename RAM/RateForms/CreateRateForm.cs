@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RAM.Model;
+using RMA.Model;
 
-namespace RAM
+namespace RMA
 {
     public partial class CreateRateForm : Form
     {
@@ -22,13 +22,13 @@ namespace RAM
 
             costTextBox.KeyPress += Utility.TextBox_KeyPress_Filte_Positive_Number_Only;
 
-            foreach (var item in RAM.Model.Region.Store.Items)
+            foreach (var item in RMA.Model.Region.Store.Items)
             {
                 originComboBox.Items.Add(item.ShortName);
                 destinationComboBox.Items.Add(item.ShortName);
             }
 
-            if (RAM.Model.Region.Store.Items.Count > 0)
+            if (RMA.Model.Region.Store.Items.Count > 0)
             {
                 originComboBox.SelectedIndex = 0;
                 destinationComboBox.SelectedIndex = 0;

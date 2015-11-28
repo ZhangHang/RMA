@@ -1,4 +1,4 @@
-﻿namespace RAM
+﻿namespace RMA
 {
     partial class CreateRegionForm
     {
