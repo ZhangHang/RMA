@@ -19,6 +19,15 @@ namespace RAM
             ReadFromDisk();
         }
 
+        public void Erase()
+        {
+            Items.Clear();
+            if (File.Exists(_databaseName))
+            {
+                File.Delete(_databaseName);
+            }
+        }
+
         public void SaveToDisk()
         {
             using (FileStream fs = new FileStream(_databaseName, FileMode.Create))

@@ -40,16 +40,21 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.settingTabPage = new System.Windows.Forms.TabPage();
+            this.demoDataButton = new System.Windows.Forms.Button();
+            this.eraseButton = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.CarrierPage.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.settingTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.CarrierPage);
             this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.settingTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -149,6 +154,38 @@
             // 
             this.columnHeader6.Text = "YAxis";
             // 
+            // settingTabPage
+            // 
+            this.settingTabPage.Controls.Add(this.eraseButton);
+            this.settingTabPage.Controls.Add(this.demoDataButton);
+            this.settingTabPage.Location = new System.Drawing.Point(8, 39);
+            this.settingTabPage.Name = "settingTabPage";
+            this.settingTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.settingTabPage.Size = new System.Drawing.Size(1144, 669);
+            this.settingTabPage.TabIndex = 2;
+            this.settingTabPage.Text = "Setting";
+            this.settingTabPage.UseVisualStyleBackColor = true;
+            // 
+            // demoDataButton
+            // 
+            this.demoDataButton.Location = new System.Drawing.Point(37, 52);
+            this.demoDataButton.Name = "demoDataButton";
+            this.demoDataButton.Size = new System.Drawing.Size(206, 52);
+            this.demoDataButton.TabIndex = 0;
+            this.demoDataButton.Text = "Load Demo Data";
+            this.demoDataButton.UseVisualStyleBackColor = true;
+            this.demoDataButton.Click += new System.EventHandler(this.demoDataButton_Click);
+            // 
+            // eraseButton
+            // 
+            this.eraseButton.Location = new System.Drawing.Point(37, 147);
+            this.eraseButton.Name = "eraseButton";
+            this.eraseButton.Size = new System.Drawing.Size(206, 52);
+            this.eraseButton.TabIndex = 1;
+            this.eraseButton.Text = "Erase All Data";
+            this.eraseButton.UseVisualStyleBackColor = true;
+            this.eraseButton.Click += new System.EventHandler(this.eraseButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -162,6 +199,7 @@
             this.CarrierPage.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.settingTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -180,6 +218,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.TabPage settingTabPage;
+        private System.Windows.Forms.Button eraseButton;
+        private System.Windows.Forms.Button demoDataButton;
     }
 }
 

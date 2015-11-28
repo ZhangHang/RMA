@@ -18,7 +18,7 @@ namespace RAM
         public MainForm()
         {
             InitializeComponent();
-            Load_DemoData();
+            tabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -29,47 +29,13 @@ namespace RAM
             Reload_RegionData();
         }
 
-        private void Load_DemoData()
+        #region TabControl
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_regionStore.Items.Count == 0)
-            {
-                _regionStore.Items.Clear();
-                _carrierStore.Items.Clear();
-                _regionStore.SaveToDisk();
-                _carrierStore.SaveToDisk();
-
-                Carrier MasterCarrier = new Carrier { SCAC = "MAST", Name = "Master Carrier" };
-                Carrier SlaveCarrier = new Carrier { SCAC = "SLAV", Name = "Slave Carrier" };
-
-                Region OriginCityRegion = new RAM.Model.Region { XAxis = 0, YAxis = 0, ShortName = "OC", Description = "Origin City" };
-                Region DestinationCityRegion = new RAM.Model.Region { XAxis = 13, YAxis = 13, ShortName = "DC", Description = "Destination City" };
-                Region ChaosLandRegion = new RAM.Model.Region { XAxis = 100, YAxis = 100, ShortName = "CL", Description = "Chaos Land" };
-                Region VoidWorldRegion = new RAM.Model.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
-
-                FlatRate flatRateForMasterCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 1000);
-                UnflatRate unflatRateForMasterCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 10);
-
-                FlatRate flatRateForSlaveCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 800);
-                UnflatRate unflatRateForSlaveCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 9);
-
-                MasterCarrier.AddRate(flatRateForMasterCarrier);
-                MasterCarrier.AddRate(unflatRateForMasterCarrier);
-                SlaveCarrier.AddRate(flatRateForSlaveCarrier);
-                SlaveCarrier.AddRate(unflatRateForMasterCarrier);
-
-                MasterCarrier.Insert();
-                SlaveCarrier.Insert();
-
-                OriginCityRegion.Insert();
-                DestinationCityRegion.Insert();
-                ChaosLandRegion.Insert();
-                VoidWorldRegion.Insert();
-
-                _carrierStore.SaveToDisk();
-                _regionStore.SaveToDisk();
-            }
+            Reload_CarrierData();
+            Reload_RegionData();
         }
-
+        #endregion
         #region Carrier
         private MenuItem _editCarrierMenuItem;
         private MenuItem _deleteCarrierMenuItem;
@@ -262,6 +228,55 @@ namespace RAM
             }
         }
 
+        #endregion
+
+
+        #region Setting
+        private void demoDataButton_Click(object sender, EventArgs e)
+        {
+            _regionStore.Erase();
+            _carrierStore.Erase();
+
+            Carrier MasterCarrier = new Carrier { SCAC = "MAST", Name = "Master Carrier" };
+            Carrier SlaveCarrier = new Carrier { SCAC = "SLAV", Name = "Slave Carrier" };
+
+            Region OriginCityRegion = new RAM.Model.Region { XAxis = 0, YAxis = 0, ShortName = "OC", Description = "Origin City" };
+            Region DestinationCityRegion = new RAM.Model.Region { XAxis = 13, YAxis = 13, ShortName = "DC", Description = "Destination City" };
+            Region ChaosLandRegion = new RAM.Model.Region { XAxis = 100, YAxis = 100, ShortName = "CL", Description = "Chaos Land" };
+            Region VoidWorldRegion = new RAM.Model.Region { XAxis = -100, YAxis = -100, ShortName = "VW", Description = "Void World" };
+
+            FlatRate flatRateForMasterCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 1000);
+            UnflatRate unflatRateForMasterCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 10);
+
+            FlatRate flatRateForSlaveCarrier = new FlatRate(OriginCityRegion, DestinationCityRegion, 800);
+            UnflatRate unflatRateForSlaveCarrier = new UnflatRate(DestinationCityRegion, ChaosLandRegion, 9);
+
+            MasterCarrier.AddRate(flatRateForMasterCarrier);
+            MasterCarrier.AddRate(unflatRateForMasterCarrier);
+            SlaveCarrier.AddRate(flatRateForSlaveCarrier);
+            SlaveCarrier.AddRate(unflatRateForMasterCarrier);
+
+            MasterCarrier.Insert();
+            SlaveCarrier.Insert();
+
+            OriginCityRegion.Insert();
+            DestinationCityRegion.Insert();
+            ChaosLandRegion.Insert();
+            VoidWorldRegion.Insert();
+
+            _carrierStore.SaveToDisk();
+            _regionStore.SaveToDisk();
+
+            MessageBox.Show("load demo data task complete");
+        }
+
+        private void eraseButton_Click(object sender, EventArgs e)
+       {
+            _regionStore.Erase();
+            _carrierStore.Erase();
+
+            MessageBox.Show("erase all data task complete");
+        }
         #endregion
     }
 }
