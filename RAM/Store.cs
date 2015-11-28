@@ -11,7 +11,7 @@ namespace RAM
     public class Store<T>
     {
         private string DatabaseName;
-        public List<T> Collection = new List<T>();
+        public List<T> Items = new List<T>();
 
         public Store(string storeName)
         {
@@ -24,7 +24,7 @@ namespace RAM
             using (FileStream fs = new FileStream(DatabaseName, FileMode.Create))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fs, Collection);
+                bf.Serialize(fs, Items);
             }
         }
         
@@ -34,12 +34,12 @@ namespace RAM
                 using (FileStream fs = new FileStream(DatabaseName, FileMode.OpenOrCreate))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
-                    Collection = bf.Deserialize(fs) as List<T>;
+                    Items = bf.Deserialize(fs) as List<T>;
                 }
             }
             catch (Exception e)
-            { 
-              
+            {
+                throw e;
             }
         }
     }

@@ -12,7 +12,8 @@ namespace RAM
 {
     public partial class EditCarrierForm : Form
     {
-        private Store<Carrier> CarrierStore;
+        private Store<Carrier> CarrierStore = Carrier.store;
+        private string originSCAC;
         private Carrier carrier;
 
         private string editedSCAC
@@ -31,12 +32,12 @@ namespace RAM
             }
         }
 
-        public EditCarrierForm(Store<Carrier> carrierStore, string carrierSCAC)
+        public EditCarrierForm(string carrierSCAC)
         {
             InitializeComponent();
-            CarrierStore = carrierStore;
-            carrier = carrierStore.Collection.Where(x=> x.SCAC == carrierSCAC).First();
-            
+            originSCAC = carrierSCAC;
+            carrier = CarrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
+
             updateButton.Click += UpdateButton_Click;
 
             sCACTextBox.Text = carrier.SCAC;
@@ -45,39 +46,35 @@ namespace RAM
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-            if(editedName == carrier.Name && editedSCAC == carrier.SCAC)
+            if (editedName == carrier.Name && editedSCAC == carrier.SCAC)
             {
                 MessageBox.Show("Nothing to update");
                 return;
             }
 
-            if(editedName.Length == 0 || editedName.Length == 0)
+            if (editedSCAC != originSCAC)
             {
-                MessageBox.Show("Name & SCAC can't be empty");
-                return;
-            }
-
-            if(editedSCAC != carrier.SCAC)
-            {
-                if (CarrierStore.Collection.Where(x => x.SCAC == editedSCAC).Count() > 0)
+                if (CarrierStore.Items.Where(x => x.SCAC == editedSCAC).Count() > 0)
                 {
                     MessageBox.Show("Duplicated SCAC");
                     return;
                 }
             }
 
-            if(editedSCAC.Length != 4)
+            try
             {
-                MessageBox.Show("SCAC has to be 4 character long");
-                return;
+                carrier.Name = editedName;
+                carrier.SCAC = editedSCAC;
+                carrier.UpdateValidation();
+                Carrier.store.SaveToDisk();
+                MessageBox.Show("Carrier has been updated");
+                this.Close();
             }
-
-            carrier.Name = editedName;
-            carrier.SCAC = editedSCAC;
-            CarrierStore.SaveToDisk();
-
-            MessageBox.Show("Carrier has been updated");
-            this.Close();
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+                Carrier.store.readFromDisk();
+            }
         }
     }
 }

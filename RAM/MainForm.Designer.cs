@@ -35,9 +35,15 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.regionListView = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl.SuspendLayout();
             this.CarrierPage.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -96,16 +102,52 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1144, 669);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Region";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.regionListView);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1138, 663);
             this.panel1.TabIndex = 0;
+            // 
+            // regionListView
+            // 
+            this.regionListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
+            this.regionListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.regionListView.FullRowSelect = true;
+            this.regionListView.GridLines = true;
+            this.regionListView.Location = new System.Drawing.Point(0, 0);
+            this.regionListView.Name = "regionListView";
+            this.regionListView.Size = new System.Drawing.Size(1138, 663);
+            this.regionListView.TabIndex = 0;
+            this.regionListView.UseCompatibleStateImageBehavior = false;
+            this.regionListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "ShortName";
+            this.columnHeader3.Width = 159;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Description";
+            this.columnHeader4.Width = 345;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "XAxis";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "YAxis";
             // 
             // MainForm
             // 
@@ -119,6 +161,7 @@
             this.tabControl.ResumeLayout(false);
             this.CarrierPage.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -132,6 +175,11 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ListView regionListView;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
     }
 }
 

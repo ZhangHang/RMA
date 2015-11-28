@@ -12,7 +12,7 @@ namespace RAM
 {
     public partial class CreateCarrierForm : Form
     {
-        private Store<Carrier> CarrierStore;
+        private Store<Carrier> CarrierStore = Carrier.store;
 
         private string editedSCAC
         {
@@ -30,42 +30,26 @@ namespace RAM
             }
         }
 
-        public CreateCarrierForm(Store<Carrier> carrierStore)
+        public CreateCarrierForm()
         {
             InitializeComponent();
-            CarrierStore = carrierStore;
 
             saveButton.Click += SaveButton_Click;
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-
-            if (editedName.Length == 0 || editedName.Length == 0)
+            try
             {
-                MessageBox.Show("Name & SCAC can't be empty");
-                return;
+                Carrier newCarrier = new Carrier { SCAC = editedSCAC, Name = editedName };
+                newCarrier.Insert();
+                CarrierStore.SaveToDisk();
+                this.Close();
             }
-
-            if (CarrierStore.Collection.Where(x => x.SCAC == editedSCAC).Count() > 0)
+            catch (Exception error)
             {
-                MessageBox.Show("Duplicated SCAC");
-                return;
+                MessageBox.Show(error.Message);
             }
-
-            if (editedSCAC.Length != 4)
-            {
-                MessageBox.Show("SCAC has to be 4 character long");
-                return;
-            }
-
-            Carrier newCarrier = new Carrier { SCAC = editedSCAC, Name = editedName };
-            CarrierStore.Collection.Add(newCarrier);
-            CarrierStore.SaveToDisk();
-
-            MessageBox.Show("Carrier has been saved");
-
-            this.Close();
         }
     }
 }

@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace RAM
 {
+    interface ICRUD
+    {
+        void Insert();
+        void UpdateValidation();
+        void Delete();
+    }
+
     #region Carrier
 
     [Serializable]
-    public sealed class Carrier : Object
+    public sealed class Carrier : Object, ICRUD
     {
+        public static Store<Carrier> store = new Store<Carrier>("CarrierStore");
+
         /*
          * RMA must be able to manage the carrier information. Each carrier has a four character SCAC and name.
          * A carrier's SCAC is unique to that carrier.
@@ -21,37 +30,70 @@ namespace RAM
 
         public string SCAC; //  four characters, Primary ID
         public string Name; //  four characters
-        private List<Rate> Rates = new List<Rate>();
+        public List<Rate> Rates = new List<Rate>();
 
         #region
-        public bool AddRate(Rate newRate)
+        public void AddRate(Rate newRate)
         {
-            if (Rates.Contains(newRate))
+            if (Rates.Where(x => x.DestinationRegionShortName == newRate.DestinationRegionShortName
+             && x.OriginRegionShortName == newRate.OriginRegionShortName).Count() > 0)
             {
-                return false;
+                throw new Exception("Duplicated rate");
             }
+
             Rates.Add(newRate);
-            return true;
         }
-        public bool RemoveRate(Rate oldRate)
+
+        public void RemoveRate(Rate oldRate)
         {
-            if (Rates.Contains(oldRate))
+            if (!Rates.Contains(oldRate))
             {
-                Rates.Remove(oldRate);
-                return true;
+                throw new Exception("Rate not found");
             }
-            return false;
+            Rates.Remove(oldRate);
+
         }
         #endregion
 
-        #region
-        public override bool Equals(object obj)
+        #region CRUD 
+        public void Insert()
         {
-            if (obj is Carrier)
+            Common_Validation();
+
+            if (store.Items.Where(x => x.SCAC == SCAC).Count() > 0)
             {
-                return (obj as Carrier).SCAC == SCAC;
+                throw new Exception("Duplicated SCAC");
             }
-            return base.Equals(obj);
+
+            store.Items.Add(this);
+        }
+
+        public void UpdateValidation()
+        {
+            Common_Validation();
+        }
+
+        public void Delete()
+        {
+            if (!store.Items.Contains(this))
+            {
+                throw new Exception("Carrier is not in the store");
+            }
+
+            store.Items.Remove(this);
+        }
+
+        private void Common_Validation()
+        {
+            if (Name.Length == 0 || SCAC.Length == 0)
+            {
+                throw new Exception("Name & SCAC can't be empty");
+            }
+
+            if (SCAC.Length != 4)
+            {
+                throw new Exception("SCAC has to be 4 character long");
+            }
         }
         #endregion
     }
@@ -61,8 +103,10 @@ namespace RAM
     #region Region
 
     [Serializable]
-    public sealed class Region : Object
+    public sealed class Region : Object, ICRUD
     {
+        public static Store<Region> store = new Store<Region>("RegionStore");
+
         /*
          * Regions are used to define rates. They represent a broad geographical area. Its up to you how to d-
          * efine the region, but they must have a short region name and a description. RMA must let users vie-
@@ -82,19 +126,42 @@ namespace RAM
                 );
         }
 
-        #region
-        public override bool Equals(object obj)
+        #region CRUD
+        public void Insert()
         {
-            if (obj is Carrier)
+            Common_Validation();
+
+            if (store.Items.Where(x => x.ShortName == ShortName).Count() > 0)
             {
-                Region objToCompare = obj as Region;
-                return objToCompare.XAxis == XAxis
-                    && objToCompare.YAxis == YAxis;
+                throw new Exception("Duplicated ShortName");
             }
-            return base.Equals(obj);
+
+            store.Items.Add(this);
+        }
+
+        public void UpdateValidation()
+        {
+            Common_Validation();
+        }
+
+        public void Delete()
+        {
+            if (!store.Items.Contains(this))
+            {
+                throw new Exception("Region is not in the store");
+            }
+
+            store.Items.Remove(this);
+        }
+
+        private void Common_Validation()
+        {
+            if (Description.Length == 0 || ShortName.Length == 0)
+            {
+                throw new Exception("Description & ShortName can't be empty");
+            }
         }
         #endregion
-
     }
 
     #endregion
@@ -112,19 +179,42 @@ namespace RAM
          * s, and delete existing rates.
          */
 
-        public Region OriginRegion;
-        public Region DestinationRegion;
+        public string OriginRegionShortName;
+        public string DestinationRegionShortName;
+        private Region OriginRegion
+        {
+            get
+            {
+                return Region.store.Items.Where(x => x.ShortName == OriginRegionShortName).First();
+            }
+        }
+        private Region DestinationRegion
+        {
+            get
+            {
+                return Region.store.Items.Where(x => x.ShortName == DestinationRegionShortName).First();
+            }
+        }
         abstract public double Cost { get; }
+
+        internal Double Distance
+        {
+            get
+            {
+                return OriginRegion.DistanceBetween(DestinationRegion);
+            }
+        }
 
         public Rate(Region origin, Region destination)
         {
-            OriginRegion = origin;
-            DestinationRegion = destination;
+            OriginRegionShortName = origin.ShortName;
+            DestinationRegionShortName = destination.ShortName;
         }
-        
-        internal double Distance()
+
+        public Rate(string originShortName, string destinationShortName)
         {
-            return OriginRegion.DistanceBetween(DestinationRegion);
+            OriginRegionShortName = originShortName;
+            DestinationRegionShortName = destinationShortName;
         }
     }
 
@@ -135,6 +225,10 @@ namespace RAM
 
         public FlatRate(Region origin, Region destination, double totalcost) : base(origin, destination)
         {
+            if (totalcost < 0 || totalcost > 2000)
+            {
+                throw new Exception("Cost has to be $0 ~ $2000");
+            }
             Totalcost = totalcost;
         }
 
@@ -154,6 +248,10 @@ namespace RAM
 
         public UnflatRate(Region origin, Region destination, double costPerMile) : base(origin, destination)
         {
+            if (costPerMile < 0 || costPerMile > 10)
+            {
+                throw new Exception("Cost has to be $0 ~ $10 per mile");
+            }
             CostPerMile = costPerMile;
         }
 
@@ -161,7 +259,7 @@ namespace RAM
         {
             get
             {
-                return CostPerMile * Distance();
+                return CostPerMile * Distance;
             }
         }
     }
