@@ -250,25 +250,5 @@ namespace RMA
             MessageBox.Show("erase all data task complete");
         }
         #endregion
-
-        private void createCarrierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void editSelectedCarrierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void deleteSelectedCarrierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void viewRatesForSelectedCarrierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
