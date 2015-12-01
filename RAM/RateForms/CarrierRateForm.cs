@@ -20,82 +20,26 @@ namespace RMA
         {
             InitializeComponent();
             _carrier = _carrierStore.Items.Where(x => x.SCAC == carrierSCAC).First();
-            Setup_RateList();
             Reload_RateData();
         }
 
-        #region Rage
-        private MenuItem _editMenuItem;
-        private MenuItem _deleteMenuItem;
-
-        private void Setup_RateList()
+        private void ActionToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            rateListView.ContextMenu = new ContextMenu();
-            rateListView.ContextMenu.MenuItems.Add(new MenuItem("Create Rate", Create_Rate));
-
-            _editMenuItem = new MenuItem("Edit", Edit_Rate);
-            _deleteMenuItem = new MenuItem("Delete", Delete_Rate);
-
-            rateListView.MouseDown += RarrierListView_MouseDown;
+            bool hasSelectedItem = rateListView.SelectedItems.Count > 0;
+            editSelectedRateToolStripMenuItem.Enabled = hasSelectedItem;
+            deleteSelectedRateToolStripMenuItem.Enabled = hasSelectedItem;
         }
-
-        private void RarrierListView_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right) return;
-
-            if (rateListView.FocusedItem != null && 
-                rateListView.FocusedItem.Bounds.Contains(e.Location))
-            {
-                rateListView.ContextMenu.MenuItems.Add(_editMenuItem);
-                rateListView.ContextMenu.MenuItems.Add(_deleteMenuItem);
-            }
-            else
-            {
-                rateListView.ContextMenu.MenuItems.Remove(_editMenuItem);
-                rateListView.ContextMenu.MenuItems.Remove(_deleteMenuItem);
-            }
-        }
-
-        private void Create_Rate(object sender, EventArgs e)
-        {
-            CreateRateForm createForm = new CreateRateForm(_carrier);
-            createForm.FormClosed += CreateForm_FormClosed;
-            createForm.ShowDialog();
-        }
-
-        private Rate FocusedRate
+        
+        private Rate SelectedRate
         {
             get
             {
-                string destinationRegionShortName = rateListView.FocusedItem.SubItems[1].Text;
+                string destinationRegionShortName = rateListView.SelectedItems[0].SubItems[1].Text;
                 string originRegionShortName = rateListView.FocusedItem.Text;
                 return _carrier.Rates.Where(x => 
                         x.OriginRegionShortName == originRegionShortName 
                         && x.DestinationRegionShortName == destinationRegionShortName).First();
             }
-        }
-
-        private void Delete_Rate(object sender, EventArgs e)
-        {
-            try
-            {
-                _carrier.RemoveRate(FocusedRate);
-                _carrierStore.SaveToDisk();
-                Reload_RateData();
-                MessageBox.Show("Carrier has been deleted");
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-
-            }
-        }
-
-        private void Edit_Rate(object sender, EventArgs e)
-        {
-           EditRateForm editForm = new EditRateForm(_carrier,FocusedRate);
-           editForm.FormClosed += EditForm_FormClosed;
-           editForm.ShowDialog();
         }
 
         private void CreateForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -121,7 +65,33 @@ namespace RMA
             }
         }
 
-        #endregion
+        private void createRateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateRateForm createForm = new CreateRateForm(_carrier);
+            createForm.FormClosed += CreateForm_FormClosed;
+            createForm.ShowDialog();
+        }
 
+        private void editSelectedRateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditRateForm editForm = new EditRateForm(_carrier, SelectedRate);
+            editForm.FormClosed += EditForm_FormClosed;
+            editForm.ShowDialog();
+        }
+
+        private void deleteSelectedRateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _carrier.RemoveRate(SelectedRate);
+                _carrierStore.SaveToDisk();
+                Reload_RateData();
+                MessageBox.Show("Carrier has been deleted");
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
     }
 }

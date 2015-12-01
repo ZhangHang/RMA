@@ -33,6 +33,12 @@
             this.carrierListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.carrierMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.carrierActionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createCarrierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editSelectedCarrierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteSelectedCarrierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewRatesForSelectedCarrierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.regionPage = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.regionListView = new System.Windows.Forms.ListView();
@@ -40,6 +46,10 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.regionMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.regionActionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createRegionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteSelectedRegionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ratePage = new System.Windows.Forms.TabPage();
             this.rateListView = new System.Windows.Forms.ListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -51,8 +61,10 @@
             this.demoDataButton = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.carrierPage.SuspendLayout();
+            this.carrierMenuStrip.SuspendLayout();
             this.regionPage.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.regionMenuStrip.SuspendLayout();
             this.ratePage.SuspendLayout();
             this.settingTabPage.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +85,7 @@
             // carrierPage
             // 
             this.carrierPage.Controls.Add(this.carrierListView);
+            this.carrierPage.Controls.Add(this.carrierMenuStrip);
             this.carrierPage.Location = new System.Drawing.Point(8, 39);
             this.carrierPage.Name = "carrierPage";
             this.carrierPage.Padding = new System.Windows.Forms.Padding(3);
@@ -90,9 +103,9 @@
             this.carrierListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.carrierListView.FullRowSelect = true;
             this.carrierListView.GridLines = true;
-            this.carrierListView.Location = new System.Drawing.Point(3, 3);
+            this.carrierListView.Location = new System.Drawing.Point(3, 43);
             this.carrierListView.Name = "carrierListView";
-            this.carrierListView.Size = new System.Drawing.Size(1138, 663);
+            this.carrierListView.Size = new System.Drawing.Size(1138, 623);
             this.carrierListView.TabIndex = 0;
             this.carrierListView.UseCompatibleStateImageBehavior = false;
             this.carrierListView.View = System.Windows.Forms.View.Details;
@@ -106,6 +119,57 @@
             // 
             this.columnHeader2.Text = "Name";
             this.columnHeader2.Width = 450;
+            // 
+            // carrierMenuStrip
+            // 
+            this.carrierMenuStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.carrierMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.carrierActionToolStripMenuItem});
+            this.carrierMenuStrip.Location = new System.Drawing.Point(3, 3);
+            this.carrierMenuStrip.Name = "carrierMenuStrip";
+            this.carrierMenuStrip.Size = new System.Drawing.Size(1138, 40);
+            this.carrierMenuStrip.TabIndex = 1;
+            this.carrierMenuStrip.Text = "carrierMenuStrip";
+            // 
+            // carrierFileToolStripMenuItem
+            // 
+            this.carrierActionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createCarrierToolStripMenuItem,
+            this.editSelectedCarrierToolStripMenuItem,
+            this.deleteSelectedCarrierToolStripMenuItem,
+            this.viewRatesForSelectedCarrierToolStripMenuItem});
+            this.carrierActionToolStripMenuItem.Name = "carrierFileToolStripMenuItem";
+            this.carrierActionToolStripMenuItem.Size = new System.Drawing.Size(64, 36);
+            this.carrierActionToolStripMenuItem.Text = "Action";
+            this.carrierActionToolStripMenuItem.DropDownOpening += ActionToolStripMenuItem_DropDownOpening;
+            // 
+            // createCarrierToolStripMenuItem
+            // 
+            this.createCarrierToolStripMenuItem.Name = "createCarrierToolStripMenuItem";
+            this.createCarrierToolStripMenuItem.Size = new System.Drawing.Size(432, 38);
+            this.createCarrierToolStripMenuItem.Text = "Create Carrier";
+            this.createCarrierToolStripMenuItem.Click += Create_Carrier;
+            // 
+            // editSelectedCarrierToolStripMenuItem
+            // 
+            this.editSelectedCarrierToolStripMenuItem.Name = "editSelectedCarrierToolStripMenuItem";
+            this.editSelectedCarrierToolStripMenuItem.Size = new System.Drawing.Size(432, 38);
+            this.editSelectedCarrierToolStripMenuItem.Text = "Edit Selected Carrier";
+            this.editSelectedCarrierToolStripMenuItem.Click += Edit_Carrier;
+            // 
+            // deleteSelectedCarrierToolStripMenuItem
+            // 
+            this.deleteSelectedCarrierToolStripMenuItem.Name = "deleteSelectedCarrierToolStripMenuItem";
+            this.deleteSelectedCarrierToolStripMenuItem.Size = new System.Drawing.Size(432, 38);
+            this.deleteSelectedCarrierToolStripMenuItem.Text = "Delete Selected Carrier";
+            this.deleteSelectedCarrierToolStripMenuItem.Click += Delete_Carrier;
+            // 
+            // viewRatesForSelectedCarrierToolStripMenuItem
+            // 
+            this.viewRatesForSelectedCarrierToolStripMenuItem.Name = "viewRatesForSelectedCarrierToolStripMenuItem";
+            this.viewRatesForSelectedCarrierToolStripMenuItem.Size = new System.Drawing.Size(432, 38);
+            this.viewRatesForSelectedCarrierToolStripMenuItem.Text = "View Rates in Selected Carrier";
+            this.viewRatesForSelectedCarrierToolStripMenuItem.Click += View_Rate_in_Selected_Carrier;
             // 
             // regionPage
             // 
@@ -121,6 +185,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.regionListView);
+            this.panel1.Controls.Add(this.regionMenuStrip);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
@@ -137,9 +202,9 @@
             this.regionListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.regionListView.FullRowSelect = true;
             this.regionListView.GridLines = true;
-            this.regionListView.Location = new System.Drawing.Point(0, 0);
+            this.regionListView.Location = new System.Drawing.Point(0, 42);
             this.regionListView.Name = "regionListView";
-            this.regionListView.Size = new System.Drawing.Size(1138, 663);
+            this.regionListView.Size = new System.Drawing.Size(1138, 621);
             this.regionListView.TabIndex = 0;
             this.regionListView.UseCompatibleStateImageBehavior = false;
             this.regionListView.View = System.Windows.Forms.View.Details;
@@ -163,6 +228,41 @@
             // 
             this.columnHeader6.Text = "YAxis";
             this.columnHeader6.Width = 86;
+            // 
+            // regionMenuStrip
+            // 
+            this.regionMenuStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.regionMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.regionActionToolStripMenuItem});
+            this.regionMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.regionMenuStrip.Name = "regionMenuStrip";
+            this.regionMenuStrip.Size = new System.Drawing.Size(1138, 42);
+            this.regionMenuStrip.TabIndex = 1;
+            this.regionMenuStrip.Text = "regionMenuStrip";
+            // 
+            // regionActionToolStripMenuItem
+            // 
+            this.regionActionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createRegionToolStripMenuItem,
+            this.deleteSelectedRegionToolStripMenuItem});
+            this.regionActionToolStripMenuItem.Name = "regionActionToolStripMenuItem";
+            this.regionActionToolStripMenuItem.Size = new System.Drawing.Size(64, 38);
+            this.regionActionToolStripMenuItem.Text = "Action";
+            this.regionActionToolStripMenuItem.DropDownOpening += ActionToolStripMenuItem_DropDownOpening;
+            // 
+            // createRegionToolStripMenuItem
+            // 
+            this.createRegionToolStripMenuItem.Name = "createRegionToolStripMenuItem";
+            this.createRegionToolStripMenuItem.Size = new System.Drawing.Size(364, 38);
+            this.createRegionToolStripMenuItem.Text = "Create Region";
+            this.createRegionToolStripMenuItem.Click += Create_Region;
+            // 
+            // deleteSelectedRegionToolStripMenuItem
+            // 
+            this.deleteSelectedRegionToolStripMenuItem.Name = "deleteSelectedRegionToolStripMenuItem";
+            this.deleteSelectedRegionToolStripMenuItem.Size = new System.Drawing.Size(364, 38);
+            this.deleteSelectedRegionToolStripMenuItem.Text = "Delete Selected Region";
+            this.deleteSelectedRegionToolStripMenuItem.Click += Delete_Region;
             // 
             // ratePage
             // 
@@ -250,13 +350,20 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1160, 716);
             this.Controls.Add(this.tabControl);
+            this.MainMenuStrip = this.carrierMenuStrip;
             this.Name = "MainForm";
             this.Text = "Rate Management";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl.ResumeLayout(false);
             this.carrierPage.ResumeLayout(false);
+            this.carrierPage.PerformLayout();
+            this.carrierMenuStrip.ResumeLayout(false);
+            this.carrierMenuStrip.PerformLayout();
             this.regionPage.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.regionMenuStrip.ResumeLayout(false);
+            this.regionMenuStrip.PerformLayout();
             this.ratePage.ResumeLayout(false);
             this.settingTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -286,6 +393,16 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.MenuStrip carrierMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem carrierActionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createCarrierToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editSelectedCarrierToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteSelectedCarrierToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip regionMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem regionActionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createRegionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteSelectedRegionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewRatesForSelectedCarrierToolStripMenuItem;
     }
 }
 

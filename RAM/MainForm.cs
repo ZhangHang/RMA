@@ -23,12 +23,29 @@ namespace RMA
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Setup_CarrierList();
-            Setup_RegionList();
             Reload_CarrierData();
             Reload_RegionData();
             Reload_RateData();
         }
+
+        #region Menu
+        private void ActionToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            if(sender == regionActionToolStripMenuItem)
+            {
+                bool hasSelectedItem = regionListView.SelectedItems.Count > 0;
+                deleteSelectedRegionToolStripMenuItem.Enabled = hasSelectedItem;
+            }
+            else if(sender == carrierActionToolStripMenuItem)
+            {
+                bool hasSelectedItem = carrierListView.SelectedItems.Count > 0;
+
+                editSelectedCarrierToolStripMenuItem.Enabled = hasSelectedItem;
+                deleteSelectedCarrierToolStripMenuItem.Enabled = hasSelectedItem;
+                viewRatesForSelectedCarrierToolStripMenuItem.Enabled = hasSelectedItem;
+            }
+        }
+        #endregion
 
         #region TabControl
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -40,39 +57,6 @@ namespace RMA
         #endregion
 
         #region Carrier
-        private MenuItem _editCarrierMenuItem;
-        private MenuItem _deleteCarrierMenuItem;
-
-        private void Setup_CarrierList()
-        {
-            carrierListView.DoubleClick += CarrierListView_DoubleClick;
-
-            carrierListView.ContextMenu = new ContextMenu();
-            carrierListView.ContextMenu.MenuItems.Add(new MenuItem("Create Carrier", Create_Carrier));
-
-            _editCarrierMenuItem = new MenuItem("Edit", Edit_Carrier);
-            _deleteCarrierMenuItem = new MenuItem("Delete", Delete_Carrier);
-
-            carrierListView.MouseDown += CarrierListView_MouseDown;
-        }
-
-        private void CarrierListView_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right) return;
-
-            if (carrierListView.FocusedItem != null &&
-                carrierListView.FocusedItem.Bounds.Contains(e.Location))
-            {
-                carrierListView.ContextMenu.MenuItems.Add(_editCarrierMenuItem);
-                carrierListView.ContextMenu.MenuItems.Add(_deleteCarrierMenuItem);
-            }
-            else
-            {
-                carrierListView.ContextMenu.MenuItems.Remove(_editCarrierMenuItem);
-                carrierListView.ContextMenu.MenuItems.Remove(_deleteCarrierMenuItem);
-            }
-        }
-
         private void Create_Carrier(object sender, EventArgs e)
         {
             CreateCarrierForm createForm = new CreateCarrierForm();
@@ -80,17 +64,17 @@ namespace RMA
             createForm.ShowDialog();
         }
 
-        private string _focusedCarrierSCAC
+        private string _selectedCarrierSCAC
         {
             get
             {
-                return carrierListView.FocusedItem.Text;
+                return carrierListView.SelectedItems[0].Text;
             }
         }
 
         private void Delete_Carrier(object sender, EventArgs e)
         {
-            Carrier itemToDelete = _carrierStore.Items.Where(x => x.SCAC == _focusedCarrierSCAC).First();
+            Carrier itemToDelete = _carrierStore.Items.Where(x => x.SCAC == _selectedCarrierSCAC).First();
             _carrierStore.Items.Remove(itemToDelete);
             _carrierStore.SaveToDisk();
             Reload_CarrierData();
@@ -99,7 +83,7 @@ namespace RMA
 
         private void Edit_Carrier(object sender, EventArgs e)
         {
-            EditCarrierForm editForm = new EditCarrierForm(_focusedCarrierSCAC);
+            EditCarrierForm editForm = new EditCarrierForm(_selectedCarrierSCAC);
             editForm.FormClosed += EditCarrierForm_FormClosed;
             editForm.ShowDialog();
         }
@@ -108,13 +92,10 @@ namespace RMA
         {
             Reload_CarrierData();
         }
-
-        private void CarrierListView_DoubleClick(object sender, EventArgs e)
+        
+        private void View_Rate_in_Selected_Carrier(object sender, EventArgs e)
         {
-            if (carrierListView.SelectedItems.Count == 0) return;
-
-            string carrierSCAC = carrierListView.SelectedItems[0].Text;
-            MainRateForm rateForm = new MainRateForm(carrierSCAC);
+            MainRateForm rateForm = new MainRateForm(_selectedCarrierSCAC);
             rateForm.ShowDialog();
         }
 
@@ -138,33 +119,6 @@ namespace RMA
         #endregion
 
         #region Region
-        private MenuItem _deleteRegionMenuItem;
-
-        private void Setup_RegionList()
-        {
-            regionListView.ContextMenu = new ContextMenu();
-            regionListView.ContextMenu.MenuItems.Add(new MenuItem("Create Region", Create_Region));
-
-            _deleteRegionMenuItem = new MenuItem("Delete", Delete_Region);
-
-            regionListView.MouseDown += RegionListView_MouseDown;
-        }
-
-        private void RegionListView_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right) return;
-
-            if (regionListView.FocusedItem != null &&
-                regionListView.FocusedItem.Bounds.Contains(e.Location))
-            {
-                regionListView.ContextMenu.MenuItems.Add(_deleteRegionMenuItem);
-            }
-            else
-            {
-                regionListView.ContextMenu.MenuItems.Remove(_deleteRegionMenuItem);
-            }
-        }
-
         private void Create_Region(object sender, EventArgs e)
         {
             CreateRegionForm createForm = new CreateRegionForm();
@@ -172,18 +126,18 @@ namespace RMA
             createForm.ShowDialog();
         }
 
-        private string _focusedRegionShortName
+        private string _selectedRegionShortName
         {
             get
             {
-                return regionListView.FocusedItem.Text;
+                return regionListView.SelectedItems[0].Text;
             }
         }
 
         private void Delete_Region(object sender, EventArgs e)
         {
             Region itemToDelete = _regionStore.Items
-                .Where(x => x.ShortName == _focusedRegionShortName).First();
+                .Where(x => x.ShortName == _selectedRegionShortName).First();
             List<string> usedOriginRegionShortNames = Carrier.Store.Items
                 .SelectMany(x => x.Rates)
                 .Select(x => x.OriginRegionShortName).Distinct().ToList();
@@ -212,13 +166,7 @@ namespace RMA
         {
             Reload_RegionData();
         }
-
-        private void RegionListView_DoubleClick(object sender, EventArgs e)
-        {
-            if (carrierListView.SelectedItems.Count == 0) return;
-
-        }
-
+        
         private void Reload_RegionData()
         {
             regionListView.Items.Clear();
@@ -302,5 +250,25 @@ namespace RMA
             MessageBox.Show("erase all data task complete");
         }
         #endregion
+
+        private void createCarrierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void editSelectedCarrierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteSelectedCarrierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void viewRatesForSelectedCarrierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
